@@ -25,9 +25,7 @@ const date = new Date().toLocaleDateString('en-uk', {
 			<div class="text-center">Start</div>
 		</template>
 		<template #default-view-body>
-			<video autoplay muted loop width="320" height="240" class="opacity-90">
-				<source src="./video.mp4" type="video/mp4" />
-			</video>
+			<img class="w-full absolute h-full" src="../assets/unsplash.jpeg" />
 			<div class="login_menu">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

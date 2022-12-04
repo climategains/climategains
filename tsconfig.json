@@ -1,0 +1,30 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"strict": false,
+		"allowJs": true,
+		"jsx": "preserve",
+		"sourceMap": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"lib": ["esnext", "dom"],
+		"baseUrl": "./src/",
+		"checkJs": false,
+		"paths": {
+			"assets/*": ["assets/*"],
+			"components/*": ["components/*"],
+			"core/*": ["core/*"],
+			"pages/*": ["pages/*"],
+			"stores/*": ["stores/*"],
+			"styles/*": ["styles/*"]
+		}
+	},
+	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+	"checkJs": false,
+	"files": [
+		"[slug].vue"
+	  ],
+	"exclude": ["node_modules"]
+}

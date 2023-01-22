@@ -5,6 +5,7 @@ import AboutComponent from 'components/about/AboutComponent.vue';
 import '@splidejs/vue-splide/css';
 
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
+
 import { useRouter, useRoute } from 'vue-router';
 import actions from '../../json/actions.json';
 

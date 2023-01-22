@@ -31,6 +31,7 @@
 	},
 	"homepage": "https://github.com/srav001/cross-web#readme",
 	"dependencies": {
+		"@capacitor-community/camera-preview": "^4.0.0",
 		"@capacitor/android": "^4.3.0",
 		"@capacitor/app": "4.0.1",
 		"@capacitor/core": "4.3.0",
@@ -42,6 +43,7 @@
 		"@capacitor/status-bar": "4.0.1",
 		"@ionic-native/core": "5.22.0-beta-1",
 		"@ionic-native/google-maps": "5.27.0-beta-20200630",
+		"@ionic-native/ionic-webview": "^5.36.0",
 		"@ionic-native/media-capture": "4",
 		"@ionic-native/video-capture-plus": "^5.36.0",
 		"@ionic/vue": "^6.2.8",
@@ -51,6 +53,7 @@
 		"@teamhive/capacitor-video-recorder": "^5.0.0",
 		"@types/google.maps": "^3.50.5",
 		"awesome-cordova-plugins": "^5.40.0",
+		"capacitor-video-player": "^4.1.0",
 		"cordova-plugin-video-capture-plus": "^1.0.0",
 		"ionicons": "^6.0.3",
 		"pinia": "^2.0.22",

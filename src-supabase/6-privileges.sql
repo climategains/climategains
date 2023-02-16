@@ -5,7 +5,6 @@
 -- Tables and views
 
 GRANT ALL ON TABLE public.medium TO anon, authenticated, service_role;
-GRANT ALL ON SEQUENCE public.files_id_seq TO anon, authenticated, service_role;
 GRANT ALL ON TABLE public.profile TO anon, authenticated, service_role;
 GRANT ALL ON TABLE public.programme TO anon, authenticated, service_role;
 GRANT ALL ON TABLE public.programme_response TO anon, authenticated, service_role;
@@ -22,13 +21,14 @@ GRANT ALL ON TABLE public.step_for_validation TO anon, authenticated, service_ro
 
 -- Sequences
 
-GRANT ALL ON SEQUENCE public.programmes_id_seq TO anon, authenticated, service_role;
-GRANT ALL ON SEQUENCE public.projects_id_seq TO anon, authenticated, service_role;
-GRANT ALL ON SEQUENCE public.responses_id_seq TO anon, authenticated, service_role;
-GRANT ALL ON SEQUENCE public.responses_templates_id_seq TO anon, authenticated, service_role;
-GRANT ALL ON SEQUENCE public.role_application_id_seq TO anon, authenticated, service_role;
+GRANT ALL ON SEQUENCE public.medium_id_seq TO anon, authenticated, service_role;
+GRANT ALL ON SEQUENCE public.programme_id_seq TO anon, authenticated, service_role;
+GRANT ALL ON SEQUENCE public.programme_response_id_seq TO anon, authenticated, service_role;
+GRANT ALL ON SEQUENCE public.programme_step_id_seq TO anon, authenticated, service_role;
+GRANT ALL ON SEQUENCE public.project_id_seq TO anon, authenticated, service_role;
+GRANT ALL ON SEQUENCE public.response_id_seq TO anon, authenticated, service_role;
+GRANT ALL ON SEQUENCE public.role_id_seq TO anon, authenticated, service_role;
 GRANT ALL ON SEQUENCE public.steps_id_seq TO anon, authenticated, service_role;
-GRANT ALL ON SEQUENCE public.steps_meta_id_seq TO anon, authenticated, service_role;
 
 
 -- Functions

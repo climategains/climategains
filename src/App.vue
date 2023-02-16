@@ -10,7 +10,7 @@ import '@splidejs/vue-splide/css/core';
 </template>
 <style>
 body {
-	background: rgba(0, 0, 0, 0.9) !important;
+	background: rgba(40, 40, 40, 0.9) !important;
 }
 #app {
 	position: relative;

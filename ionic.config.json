@@ -1,7 +1,9 @@
 {
   "name": "ClimateGains",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {
+     
+    }
   },
   "type": "vue"
 }

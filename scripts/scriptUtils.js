@@ -38,7 +38,7 @@ const getIP = () =>
  * @param [addLiveServer=false] - boolean - if true, the capacitor.config.json file will be updated
  * with the live server url.
  */
-const updateCapacitorConfig = (addLiveServer = false) => {
+const updateCapacitorConfig = (addLiveServer = true) => {
 	const filePath = path.resolve('capacitor.config.json');
 	const fileToEdit = JSON.parse(readFileSync(filePath, { encoding: 'utf8' }));
 	if (fileToEdit.server) delete fileToEdit.server;

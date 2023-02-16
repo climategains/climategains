@@ -2,6 +2,9 @@
 include ':capacitor-android'
 project(':capacitor-android').projectDir = new File('../../node_modules/.pnpm/@capacitor+android@4.3.0_@capacitor+core@4.3.0/node_modules/@capacitor/android/capacitor')
 
+include ':capacitor-community-camera-preview'
+project(':capacitor-community-camera-preview').projectDir = new File('../../node_modules/.pnpm/@capacitor-community+camera-preview@4.0.0/node_modules/@capacitor-community/camera-preview/android')
+
 include ':capacitor-app'
 project(':capacitor-app').projectDir = new File('../../node_modules/.pnpm/@capacitor+app@4.0.1_@capacitor+core@4.3.0/node_modules/@capacitor/app/android')
 
@@ -19,3 +22,6 @@ project(':capacitor-keyboard').projectDir = new File('../../node_modules/.pnpm/@
 
 include ':capacitor-status-bar'
 project(':capacitor-status-bar').projectDir = new File('../../node_modules/.pnpm/@capacitor+status-bar@4.0.1_@capacitor+core@4.3.0/node_modules/@capacitor/status-bar/android')
+
+include ':capacitor-video-player'
+project(':capacitor-video-player').projectDir = new File('../../node_modules/.pnpm/capacitor-video-player@4.1.0_ghhc4h4gx6slmmwoe65lpjluh4/node_modules/capacitor-video-player/android')

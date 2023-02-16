@@ -1,0 +1,239 @@
+{
+	"data": [{
+	"id": "638f6a7d5020beaf162c3b17",
+	"name":"Uganda school kitchen modernisation",
+	"status": "active",
+	"settings": {
+		"project": {
+		"steps": [
+			{
+			"index": "1",
+			"prefunding": 0,
+			"description": [
+				{
+				"language": "en",
+				"text": "Create and submit an application video. After approval, you will receive the first pre-funding and can start the work."
+				}
+			],
+			"worktime": 1,
+			"risks": "loss of time when application rejected",
+			"supplies": "smartphone with videocamera",
+			"tech_support": "<b>phone:</b> +23 456 7889900<br/><b>email:</b> support@example.com",
+			"name": [
+				{
+				"language": "en",
+				"text": "Application Phase"
+				}
+			],
+			"type": "document-upload-review",
+			"content": [
+				{
+				"private": false,
+				"required": false,
+				"type": "upload-multiple-documents",
+				"title": [
+					{
+					"language": "en",
+					"text": "Question 1/2"
+					}
+				],
+				"description": [
+					{
+					"language": "en",
+					"text": "Tell us how do you plan to execute this project?"
+					}
+				]
+				},
+				{
+				"private": false,
+				"required": false,
+				"type": "upload-multiple-documents",
+				"title": [
+					{
+					"language": "en",
+					"text": "Question 2/2"
+					}
+				],
+				"description": [
+					{
+					"language": "en",
+					"text": "What challenges will you probably encounter, and how will you solve them?"
+					}
+				]
+				},
+				{
+				"private": false,
+				"required": false,
+				"type": "upload-multiple-documents",
+				"title": [
+					{
+					"language": "en",
+					"text": "Security Question"
+					}
+				],
+				"description": [
+					{
+					"language": "en",
+					"text": "Repeat this phrase: the quick young fox jumps over the lazy dog."
+					}
+				]
+				}
+			],
+			"submitter": "developer",
+			"reviewers": [
+				"validator"
+			],
+			"suppliers": "null"
+			},
+			{
+			"index": "1",
+			"description": [
+				{
+				"language": "en",
+				"text": "Create and submit a video showing the situation at the start of the project."
+				}
+			],
+			"prefunding": 1000,
+			"worktime": 3.5,
+			"risks": "Ordinary occpational hazards :-)",
+			"supplies": "smartphone with video camera",
+			"suppliers": "Mr. Kazanga's Universal Store<br/>Soandso Stree 123<br/>GXR23 Kampala",
+			"tech_support": "<b>phone:</b> +23 456 7889900<br/><b>email:</b> support@example.com",
+			"name": [
+				{
+				"language": "en",
+				"text": "Baseline situation"
+				}
+			],
+			"type": "document-upload-review",
+			"content": [
+				{
+				"private": false,
+				"required": false,
+				"type": "upload-multiple-documents",
+				"title": [
+					{
+					"language": "en",
+					"text": "Question 1/1"
+					}
+				],
+				"description": [
+					{
+					"language": "en",
+					"text": "Show and describe the school's kitchen situation on video while walking around in the kitchen."
+					}
+				]
+				},
+				{
+				"private": false,
+				"required": false,
+				"type": "upload-multiple-documents",
+				"title": [
+					{
+					"language": "en",
+					"text": "Security Question"
+					}
+				],
+				"description": [
+					{
+					"language": "en",
+					"text": "Repeat this phrase: we want you to repeate a random phrase."
+					}
+				]
+				}
+			],
+			"submitter": "developer",
+			"reviewers": [
+				"validator"
+			]
+			}
+		],
+		"monitoring": false
+		},
+		"applications": [
+		{
+			"role": "developer",
+			"identity": {
+			"description": [
+				{
+				"language": "en",
+				"text": "ID card<br>"
+				}
+			],
+			"type": "nationalregistryid"
+			}
+		},
+		{
+			"role": "validator",
+			"identity": {
+			"documents": [
+				{
+				"description": [
+					{
+					"language": "en",
+					"text": "ID card<br>"
+					}
+				],
+				"name": [
+					{
+					"language": "en",
+					"text": "ID card"
+					}
+				],
+				"id": "63ae0024d9db34c3c146f695"
+				}
+			],
+			"type": "onplatform"
+			}
+		}
+		],
+		"functions": [
+		"developer",
+		"validator"
+		],
+		"finance": {
+		"fundingSource": "European Union",
+		"fundingCurrency": "EUR",
+		"fee": {
+			"value": "0",
+			"currency": "EUR",
+			"description": [
+			{
+				"language": "EN",
+				"text": "string"
+			}
+			]
+		}
+		},
+		"media": {
+		"poster": {
+			"url": "https://wsimages.wilderness-safaris.com/uploads/medium/file/20546/small_focal_Bisate_44.jpg",
+			"caption": "example of a kitchen stove in a school kitchen"
+		},
+		"video": {
+			"url": "https://2050today.org/wp-content/uploads/2020/07/Video-Placeholder.mp4?_=1",
+			"caption": "video from a former stove installation"
+		},
+		"gallery": [
+			{
+			"url": "https://imagizer.imageshack.com/img924/4753/dvNGXY.jpg",
+			"caption": "stove detail"
+			},
+			{
+			"url": "https://imagizer.imageshack.com/img922/2741/vNdRs7.jpg",
+			"caption": "school pupils around a modernized school kitchen"
+			},
+			{
+			"url": "https://imagizer.imageshack.com/img923/5967/Lh2ymu.jpg",
+			"caption": "a previous team with their finished stove installation"
+			}
+		]
+		}
+	},
+	"defaultSector": "Energy Demand",
+	"countryCode": "ug",
+	"locationName": "Kampala",
+	"emissionsAvoided": 1200,
+	"projectsCount": 14
+	}]
+}

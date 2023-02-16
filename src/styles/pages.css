@@ -1,6 +1,6 @@
 /* If you feel like your html is becoming dirty with alot of classes, use @apply multiple classes to one and use that */
 .welcome-page {
-	@apply flex flex-col justify-center m-0 items-center h-full mx-6;
+	@apply flex flex-col justify-start m-0 items-start h-full mx-6 pt-20;
 }
 ul {
 	list-style-type: none;

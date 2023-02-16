@@ -22,6 +22,9 @@ const svgIcon = defineAsyncComponent(() => import(`./glyphs/${props.type}.vue`))
 .sun {
 	@apply bg-yellow-600;
 }
+.energy {
+	@apply bg-green-600;
+}
 .gas {
 	@apply bg-blue-600;
 }

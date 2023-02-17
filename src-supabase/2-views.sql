@@ -2,7 +2,9 @@
 -- Project-defined views
 --
 
-CREATE VIEW public.project_for_mgm AS
+-- project_for_mgm
+
+CREATE OR REPLACE VIEW public.project_for_mgm AS
  SELECT project.id,
     project.name,
     project.location_name,
@@ -12,10 +14,12 @@ CREATE VIEW public.project_for_mgm AS
      JOIN public.role ON ((role.project_id = project.id)))
   WHERE ((role.manager = true) AND (role.user_id = auth.uid()));
 
-ALTER TABLE public.project_for_mgm OWNER TO postgres;
+ALTER VIEW public.project_for_mgm OWNER TO postgres;
 
 
-CREATE VIEW public.role_for_usermgm AS
+-- role_for_usermgm
+
+CREATE OR REPLACE VIEW public.role_for_usermgm AS
  SELECT role.id,
     role.project_id,
     role.user_id,
@@ -29,10 +33,12 @@ CREATE VIEW public.role_for_usermgm AS
              JOIN public.project ON ((role_1.project_id = project.id)))
           WHERE (role_1.manager = true))));
 
-ALTER TABLE public.role_for_usermgm OWNER TO postgres;
+ALTER VIEW public.role_for_usermgm OWNER TO postgres;
 
 
-CREATE VIEW public.step_for_payment AS
+-- step_for_payment
+
+CREATE OR REPLACE VIEW public.step_for_payment AS
  SELECT step.id,
     step.paid,
     step.payment_comment,
@@ -40,10 +46,12 @@ CREATE VIEW public.step_for_payment AS
    FROM public.step
   WHERE public.can_pay(step.project_id);
 
-ALTER TABLE public.step_for_payment OWNER TO postgres;
+ALTER VIEW public.step_for_payment OWNER TO postgres;
 
 
-CREATE VIEW public.step_for_validation AS
+-- step_for_validation
+
+CREATE OR REPLACE VIEW public.step_for_validation AS
  SELECT step.validation_status,
     step.validation_comment,
     step.validation_updated,
@@ -51,4 +59,4 @@ CREATE VIEW public.step_for_validation AS
    FROM public.step
   WHERE public.can_validate(step.project_id);
 
-ALTER TABLE public.step_for_validation OWNER TO postgres;
+ALTER VIEW public.step_for_validation OWNER TO postgres;

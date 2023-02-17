@@ -3,7 +3,7 @@
 -- Including their use as triggers in tables.
 --
 
-CREATE FUNCTION public.can_implement(my_project_id bigint) RETURNS boolean
+CREATE OR REPLACE FUNCTION public.can_implement(my_project_id bigint) RETURNS boolean
     LANGUAGE plpgsql
     AS $$BEGIN
     SELECT EXISTS (
@@ -18,7 +18,7 @@ CREATE FUNCTION public.can_implement(my_project_id bigint) RETURNS boolean
 END;$$;
 
 
-CREATE FUNCTION public.can_pay(my_project_id bigint) RETURNS boolean
+CREATE OR REPLACE FUNCTION public.can_pay(my_project_id bigint) RETURNS boolean
     LANGUAGE plpgsql
     AS $$BEGIN
     /* Determine if the current user should be able to edit payment 
@@ -37,7 +37,7 @@ CREATE FUNCTION public.can_pay(my_project_id bigint) RETURNS boolean
 END;$$;
 
 
-CREATE FUNCTION public.can_validate(my_project_id bigint) RETURNS boolean
+CREATE OR REPLACE FUNCTION public.can_validate(my_project_id bigint) RETURNS boolean
     LANGUAGE plpgsql
     AS $$BEGIN
     SELECT EXISTS (
@@ -52,7 +52,7 @@ CREATE FUNCTION public.can_validate(my_project_id bigint) RETURNS boolean
 END;$$;
 
 
-CREATE FUNCTION public.insert_project_mgr() RETURNS trigger
+CREATE OR REPLACE FUNCTION public.insert_project_mgr() RETURNS trigger
     LANGUAGE plpgsql SECURITY DEFINER
     AS $$BEGIN
     /* AFTER INSERT trigger for table project */
@@ -66,11 +66,11 @@ CREATE FUNCTION public.insert_project_mgr() RETURNS trigger
     RETURN NEW;
 END;$$;
 
-CREATE TRIGGER insert_project_mgr AFTER INSERT ON public.project 
+CREATE OR REPLACE TRIGGER insert_project_mgr AFTER INSERT ON public.project 
     FOR EACH ROW EXECUTE FUNCTION public.insert_project_mgr();
 
 
-CREATE FUNCTION public.project_for_response(my_response_id bigint) RETURNS bigint
+CREATE OR REPLACE FUNCTION public.project_for_response(my_response_id bigint) RETURNS bigint
     LANGUAGE plpgsql
     AS $$BEGIN
 

@@ -1,5 +1,12 @@
 MIT License
 
+For the mobile application:
+Copyright (c) 2022-2023 Owen Gothill
+
+For the backend API (src-supabase):
+Copyright (c) 2022-2023 Matthias Ansorg
+
+For the Vue application template, see https://github.com/srav001/cross-vue :
 Copyright (c) 2022 Sravan Suresh
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

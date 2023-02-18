@@ -47,9 +47,20 @@ GRANT ALL ON FUNCTION public.can_validate(my_project_id bigint)
 
 ALTER FUNCTION public.insert_project_mgr() OWNER TO postgres;
 REVOKE ALL ON FUNCTION public.insert_project_mgr() FROM PUBLIC;
-GRANT ALL ON FUNCTION public.insert_project_mgr() TO
-    TO anon, authenticated, service_role;
+GRANT ALL ON FUNCTION public.insert_project_mgr() TO service_role;
+-- TODO: The following was contained in the Supabase dump, but probably is wrong as it would 
+-- counteract the (necessary) REVOKE ALL for this "SECURITY definer" function. To confirm.
+-- GRANT ALL ON FUNCTION public.insert_project_mgr() TO
+--    TO anon, authenticated, service_role;
 
 ALTER FUNCTION public.project_for_response(my_response_id bigint) OWNER TO postgres;
 GRANT ALL ON FUNCTION public.project_for_response(my_response_id bigint)
     TO anon, authenticated, service_role;
+
+ALTER FUNCTION public.insert_profile() OWNER TO postgres;
+REVOKE ALL ON FUNCTION public.insert_profile() FROM PUBLIC;
+GRANT ALL ON FUNCTION public.insert_profile() TO service_role;
+-- TODO: The following was contained in the Supabase dump, but probably is wrong as it would 
+-- counteract the (necessary) REVOKE ALL for this "SECURITY definer" function. To confirm.
+-- GRANT ALL ON FUNCTION public.insert_project_mgr() TO
+--    TO anon, authenticated, service_role;

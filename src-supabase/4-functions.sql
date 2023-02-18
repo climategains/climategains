@@ -61,15 +61,15 @@ BEGIN
     /* AFTER INSERT trigger for table project */
     /* Creates a manager role for the user who created the project.*/
     /* Privileged function, protect from direct execution. See:
-    *  https://dba.stackexchange.com/a/264001 
-    *  https://stackoverflow.com/a/72140046 */
+     *  https://dba.stackexchange.com/a/264001 
+     *  https://stackoverflow.com/a/72140046 */
     INSERT 
         INTO public.role ("project_id", "user_id", "manager")
         VALUES (new.id, auth.uid(), true);
     RETURN new;
 END;$$;
 
--- At this time, CREATE TRIGGER IF EXISTS does not work in Supabase SQL Editor due to a bug. See:
+-- At this time, CREATE OR REPLACE TRIGGER does not work in Supabase SQL Editor due to a bug. See:
 -- https://github.com/supabase/supabase/issues/12523 . (It works via psql, though.)
 DROP TRIGGER IF EXISTS insert_project_mgr ON auth.users;
 CREATE TRIGGER insert_project_mgr AFTER INSERT ON public.project 

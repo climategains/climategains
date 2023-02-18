@@ -1,6 +1,6 @@
 --
 -- Project-defined tables
---
+-- (Includes constraints, except that foreign key constraints are in 3-fkey-constraints.sql.)
 
 /*  To adapt tables, it is best to alter them in Supabase, and reflect the changes 
     in code here. If you need to see a table definition for <tablename>, use this command:
@@ -119,11 +119,10 @@ COMMENT ON COLUMN public.medium.object_id IS 'S3 object ID of the file. Referenc
 
 CREATE TABLE public.profile (
     id uuid NOT NULL,
-    firstname text NOT NULL,
-    lastname text NOT NULL,
+    fullname text NOT NULL,
     organization text,
-    language text DEFAULT '''en'''::text,
-    payment_accounts jsonb[]
+    ui_language text DEFAULT '''en'''::text,
+    payment_accounts jsonb
 );
 
 ALTER TABLE public.profile OWNER TO postgres;
@@ -135,19 +134,19 @@ COMMENT ON TABLE public.profile IS 'Profile information of Climate Gains API use
     'with the Supabase provided table auth.users, and providing extended information for it.';
 COMMENT ON COLUMN public.profile.id IS 'User ID. References auth.users.id, a column in the Supabase '
     'provided internal table.';
-COMMENT ON COLUMN public.profile.firstname IS 'User firstname.';
-COMMENT ON COLUMN public.profile.lastname IS 'User lastname.';
+COMMENT ON COLUMN public.profile.fullname IS 'Full user name, in "firstname middlenames lastname" '
+    'format.';
 COMMENT ON COLUMN public.profile.organization IS 'Name of the organization (if any) that deployed '
     'the user to work in a Climate Gains programme.';
-COMMENT ON COLUMN public.profile.language IS 'User''s preferred user interface language. Must be a '
+COMMENT ON COLUMN public.profile.ui_language IS 'User’s preferred user interface language. Must be a '
     'two-letter language code according to ISO 639-1. See: '
     'https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes';
 COMMENT ON COLUMN public.profile.payment_accounts IS E'Payment information how this user wants to '
     'receive the funding associated with project steps. One payment account per array element.'
     '\n\n'
-    'Elements must conform to https://schema.googleapis.com/Account (sadly, no equivalent is '
-    'available yet in schema.org properties). Many different types of accounts (bank account, '
-    'MPesa, PayPal, cash transfer services etc.) can be described.';
+    'A JSON array, whose elements must conform to https://schema.googleapis.com/Account (sadly, no '
+    'equivalent is available yet in schema.org properties). Many different types of accounts (bank '
+    'account, MPesa, PayPal, cash transfer services etc.) can be described.';
 
 
 --

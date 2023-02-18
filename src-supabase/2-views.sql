@@ -4,59 +4,98 @@
 
 -- project_for_mgm
 
-CREATE OR REPLACE VIEW public.project_for_mgm AS
- SELECT project.id,
-    project.name,
-    project.location_name,
-    project.geo_lat,
-    project.geo_long
-   FROM (public.project
-     JOIN public.role ON ((role.project_id = project.id)))
-  WHERE ((role.manager = true) AND (role.user_id = auth.uid()));
+-- DROP first, as CREATE OR REPLACE will only attempty column renaming, failing when adding columns.
+DROP VIEW IF EXISTS public.project_for_mgm;
+CREATE VIEW public.project_for_mgm AS
+    SELECT project.id, project.name, project.location_name, project.geo_lat, project.geo_long
+        FROM public.project JOIN public.role ON role.project_id = project.id
+        WHERE role.user_id = auth.uid() AND role.manager = true;
+        -- TODO Make the implementation simpler and more consistent with the other views below 
+        -- by using a function: no join, then "WHERE is_manager(project.id)" or maybe 
+        -- can_manage(project.id) or invoker_is_manager(project.id).
 
 ALTER VIEW public.project_for_mgm OWNER TO postgres;
+
+COMMENT ON VIEW public.project_for_mgm IS 
+    E'Project metadata that the current user can edit.'
+    '\n\n'
+    'With this view, a user can edit name, location etc. of projects she has a manager role in.';
+COMMENT ON COLUMN public.project_for_mgm.id IS 'Same as project.id.';
+COMMENT ON COLUMN public.project_for_mgm.name IS 'Same as project.name.';
+COMMENT ON COLUMN public.project_for_mgm.location_name IS 'Same as project.location_name.';
+COMMENT ON COLUMN public.project_for_mgm.geo_lat IS 'Same as project.geo_lat.';
+COMMENT ON COLUMN public.project_for_mgm.geo_long IS 'Same as project.geo_long.';
 
 
 -- role_for_usermgm
 
-CREATE OR REPLACE VIEW public.role_for_usermgm AS
- SELECT role.id,
-    role.project_id,
-    role.user_id,
-    role.activist_application,
-    role.activist,
-    role.manager_application,
-    role.manager
-   FROM public.role
-  WHERE ((role.project_id IS NOT NULL) AND (auth.uid() IN ( SELECT role_1.user_id
-           FROM (public.role role_1
-             JOIN public.project ON ((role_1.project_id = project.id)))
-          WHERE (role_1.manager = true))));
+DROP VIEW IF EXISTS public.role_for_usermgm;
+CREATE VIEW public.role_for_usermgm AS
+    -- List all role records associated with projects that current user manages.
+    SELECT view.id, view.project_id, view.user_id, 
+        view.activist_application, view.activist, view.manager_application, view.manager
+        FROM public.role AS view JOIN public.role AS rights ON view.project_id = rights.project_id
+        WHERE rights.user_id = auth.uid() AND rights.manager = true;
+        -- TODO Make the implementation simpler and more consistent with the other views below 
+        -- by using a function: no join, then "WHERE is_manager(project.id)" or maybe 
+        -- can_manage(project.id) or invoker_is_manager(project.id).
 
 ALTER VIEW public.role_for_usermgm OWNER TO postgres;
+
+COMMENT ON VIEW public.role_for_usermgm IS 
+    E'User permission records that the current user can manage (edit).'
+    '\n\n'
+    'A user can manage (edit) the permission of another user if the user is a project manager of '
+    'the project to which the permission relates, and the permission relates to an activist or '
+    'manager role, but not a validator role.';
+COMMENT ON COLUMN public.role_for_usermgm.id IS 'Same as role.id.';
+COMMENT ON COLUMN public.role_for_usermgm.project_id IS 'Same as role.project_id.';
+COMMENT ON COLUMN public.role_for_usermgm.user_id IS 'Same as role.user_id.';
+COMMENT ON COLUMN public.role_for_usermgm.activist_application IS 'Same as role.activist_application.';
+COMMENT ON COLUMN public.role_for_usermgm.activist IS 'Same as role.activist.';
+COMMENT ON COLUMN public.role_for_usermgm.manager_application IS 'Same as role.manager.';
+COMMENT ON COLUMN public.role_for_usermgm.manager IS 'Same as role.manager.';
 
 
 -- step_for_payment
 
-CREATE OR REPLACE VIEW public.step_for_payment AS
- SELECT step.id,
-    step.paid,
-    step.payment_comment,
-    step.paid_by
-   FROM public.step
-  WHERE public.can_pay(step.project_id);
+DROP VIEW IF EXISTS public.step_for_payment;
+CREATE VIEW public.step_for_payment AS
+    SELECT step.id, step.paid, step.payment_comment, step.paid_by
+        FROM public.step
+        WHERE public.can_pay(step.project_id);
 
 ALTER VIEW public.step_for_payment OWNER TO postgres;
+
+COMMENT ON VIEW public.step_for_payment IS 
+    E'Payment related information about projects steps that is editable by the current user.'
+    '\n\n'
+    'A user can edit the payment payment status, comment and "paid by" information if she is a '
+    'payment manager of the associated project''s programme.';
+COMMENT ON COLUMN public.step_for_payment.id IS 'Same as step.id.';
+COMMENT ON COLUMN public.step_for_payment.paid IS 'Same as step.paid.';
+COMMENT ON COLUMN public.step_for_payment.payment_comment IS 'Same as step.payment_comment.';
+COMMENT ON COLUMN public.step_for_payment.paid_by IS 'Same as step.paid_by.';
 
 
 -- step_for_validation
 
+DROP VIEW IF EXISTS public.step_for_validation;
 CREATE OR REPLACE VIEW public.step_for_validation AS
- SELECT step.validation_status,
-    step.validation_comment,
-    step.validation_updated,
-    step.validator
-   FROM public.step
-  WHERE public.can_validate(step.project_id);
+    SELECT step.id, 
+        step.validation_status, step.validation_comment, step.validation_updated, step.validator
+        FROM public.step
+        WHERE public.can_validate(step.project_id);
 
 ALTER VIEW public.step_for_validation OWNER TO postgres;
+
+COMMENT ON VIEW public.step_for_validation IS 
+    E'Validation related information about project steps that is editable by the current user.'
+    '\n\n'
+    'A user can edit the validation related information about a project step if she is a validator'
+    'of the project (or of the project''s programme, but that has yet to be implemented).';
+COMMENT ON COLUMN public.step_for_validation.id IS 'Same as step.id.';
+COMMENT ON COLUMN public.step_for_validation.validation_status IS 'Same as step.validation_status.';
+COMMENT ON COLUMN public.step_for_validation.validation_comment IS 'Same as step.validation_comment.';
+COMMENT ON COLUMN public.step_for_validation.validation_updated IS 'Same as step.validation_updated.';
+COMMENT ON COLUMN public.step_for_validation.validator IS 'Same as step.validator.';

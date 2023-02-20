@@ -2,11 +2,29 @@
 -- Project-defined views
 --
 
+
+-- profile_for_all
+
+-- DROP first, as CREATE OR REPLACE will only attempt column renaming, failing when adding columns.
+DROP VIEW IF EXISTS public.profile_for_all;
+CREATE VIEW public.profile_for_all AS
+    SELECT id, fullname, organization
+        FROM public.profile;
+
+ALTER VIEW public.profile_for_all OWNER TO postgres; -- Populate view with Use superuser privileges.
+
+COMMENT ON VIEW public.profile_for_all IS 
+    'The subset of profile information that should be publicly accessible.';
+COMMENT ON COLUMN public.profile_for_all.id IS 'Same as profile.id.';
+COMMENT ON COLUMN public.profile_for_all.fullname IS 'Same as profile.fullname.';
+COMMENT ON COLUMN public.profile_for_all.organization IS 'Same as profile.organization.';
+
+
 -- project_for_mgm
 
--- DROP first, as CREATE OR REPLACE will only attempty column renaming, failing when adding columns.
 DROP VIEW IF EXISTS public.project_for_mgm;
-CREATE VIEW public.project_for_mgm AS
+-- See for security_barrier requirement: https://www.postgresql.org/docs/current/rules-privileges.html
+CREATE VIEW public.project_for_mgm WITH (security_barrier) AS
     SELECT project.id, project.name, project.location_name, project.geo_lat, project.geo_long
         FROM public.project JOIN public.role ON role.project_id = project.id
         WHERE role.user_id = auth.uid() AND role.manager = true;
@@ -14,7 +32,7 @@ CREATE VIEW public.project_for_mgm AS
         -- by using a function: no join, then "WHERE is_manager(project.id)" or maybe 
         -- can_manage(project.id) or invoker_is_manager(project.id).
 
-ALTER VIEW public.project_for_mgm OWNER TO postgres;
+ALTER VIEW public.project_for_mgm OWNER TO postgres; -- Populate view with Use superuser privileges.
 
 COMMENT ON VIEW public.project_for_mgm IS 
     E'Project metadata that the current user can edit.'
@@ -30,7 +48,8 @@ COMMENT ON COLUMN public.project_for_mgm.geo_long IS 'Same as project.geo_long.'
 -- role_for_usermgm
 
 DROP VIEW IF EXISTS public.role_for_usermgm;
-CREATE VIEW public.role_for_usermgm AS
+-- See for security_barrier requirement: https://www.postgresql.org/docs/current/rules-privileges.html
+CREATE VIEW public.role_for_usermgm WITH (security_barrier) AS
     -- List all role records associated with projects that current user manages.
     SELECT view.id, view.project_id, view.user_id, 
         view.activist_application, view.activist, view.manager_application, view.manager
@@ -40,7 +59,7 @@ CREATE VIEW public.role_for_usermgm AS
         -- by using a function: no join, then "WHERE is_manager(project.id)" or maybe 
         -- can_manage(project.id) or invoker_is_manager(project.id).
 
-ALTER VIEW public.role_for_usermgm OWNER TO postgres;
+ALTER VIEW public.role_for_usermgm OWNER TO postgres; -- Populate view with Use superuser privileges.
 
 COMMENT ON VIEW public.role_for_usermgm IS 
     E'User permission records that the current user can manage (edit).'
@@ -60,12 +79,13 @@ COMMENT ON COLUMN public.role_for_usermgm.manager IS 'Same as role.manager.';
 -- step_for_payment
 
 DROP VIEW IF EXISTS public.step_for_payment;
-CREATE VIEW public.step_for_payment AS
+-- See for security_barrier requirement: https://www.postgresql.org/docs/current/rules-privileges.html
+CREATE VIEW public.step_for_payment WITH (security_barrier) AS
     SELECT step.id, step.paid, step.payment_comment, step.paid_by
         FROM public.step
         WHERE public.can_pay(step.project_id);
 
-ALTER VIEW public.step_for_payment OWNER TO postgres;
+ALTER VIEW public.step_for_payment OWNER TO postgres; -- Populate view with Use superuser privileges.
 
 COMMENT ON VIEW public.step_for_payment IS 
     E'Payment related information about projects steps that is editable by the current user.'
@@ -81,13 +101,14 @@ COMMENT ON COLUMN public.step_for_payment.paid_by IS 'Same as step.paid_by.';
 -- step_for_validation
 
 DROP VIEW IF EXISTS public.step_for_validation;
-CREATE OR REPLACE VIEW public.step_for_validation AS
+-- See for security_barrier requirement: https://www.postgresql.org/docs/current/rules-privileges.html
+CREATE OR REPLACE VIEW public.step_for_validation WITH (security_barrier) AS
     SELECT step.id, 
         step.validation_status, step.validation_comment, step.validation_updated, step.validator
         FROM public.step
         WHERE public.can_validate(step.project_id);
 
-ALTER VIEW public.step_for_validation OWNER TO postgres;
+ALTER VIEW public.step_for_validation OWNER TO postgres; -- Populate view with Use superuser privileges.
 
 COMMENT ON VIEW public.step_for_validation IS 
     E'Validation related information about project steps that is editable by the current user.'

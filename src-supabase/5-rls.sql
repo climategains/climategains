@@ -74,6 +74,9 @@ CREATE POLICY insert_for_own_project ON public.response FOR INSERT TO authentica
 
 ALTER TABLE public.role ENABLE ROW LEVEL SECURITY;
 
+CREATE POLICY select_for_all ON public.role FOR SELECT
+    USING true;
+
 
 ALTER TABLE public.step ENABLE ROW LEVEL SECURITY;
 

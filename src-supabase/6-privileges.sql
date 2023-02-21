@@ -1,5 +1,9 @@
 --
--- Privileges for all project-defined entities
+-- Privileges for project-defined entities
+-- 
+-- Throughout this file, GRANTs are not revoked from users by username, as users are not 
+-- addressed by name in Supabase. If a grant had been given to a user by name, it was an admin 
+-- action for a specific installation and should probably not be reversed.
 --
 
 -- Tables

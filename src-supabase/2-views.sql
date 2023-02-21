@@ -87,11 +87,11 @@ CREATE VIEW public.step_for_payment WITH (security_barrier) AS
 
 ALTER VIEW public.step_for_payment OWNER TO postgres; -- Populate view with Use superuser privileges.
 
-COMMENT ON VIEW public.step_for_payment IS 
-    E'Payment related information about projects steps that is editable by the current user.'
+COMMENT ON VIEW public.step_for_payment IS E''
+    'Payment related information about projects steps that is editable by the current user.'
     '\n\n'
     'A user can edit the payment payment status, comment and "paid by" information if she is a '
-    'payment manager of the associated project''s programme.';
+    'payment manager of the associated project’s programme.';
 COMMENT ON COLUMN public.step_for_payment.id IS 'Same as step.id.';
 COMMENT ON COLUMN public.step_for_payment.paid IS 'Same as step.paid.';
 COMMENT ON COLUMN public.step_for_payment.payment_comment IS 'Same as step.payment_comment.';
@@ -110,11 +110,11 @@ CREATE OR REPLACE VIEW public.step_for_validation WITH (security_barrier) AS
 
 ALTER VIEW public.step_for_validation OWNER TO postgres; -- Populate view with Use superuser privileges.
 
-COMMENT ON VIEW public.step_for_validation IS 
-    E'Validation related information about project steps that is editable by the current user.'
+COMMENT ON VIEW public.step_for_validation IS E''
+    'Validation related information about project steps that is editable by the current user.'
     '\n\n'
     'A user can edit the validation related information about a project step if she is a validator'
-    'of the project (or of the project''s programme, but that has yet to be implemented).';
+    'of the project (or of the project’s programme, but that has yet to be implemented).';
 COMMENT ON COLUMN public.step_for_validation.id IS 'Same as step.id.';
 COMMENT ON COLUMN public.step_for_validation.validation_status IS 'Same as step.validation_status.';
 COMMENT ON COLUMN public.step_for_validation.validation_comment IS 'Same as step.validation_comment.';

@@ -1,9 +1,55 @@
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <template>
 	<ion-page>
 		<ion-content class="my-custom-camera-preview-content" :fullscreen="true">
 			<div v-if="cameraActive" class="flex h-full flex-col items-stretch stretch">
-				<div id="cameraPreview" class="grow-0 relative cameraPreview"></div>
-				<div class="w-full overlay h-5 z-10 flex items-center justify-between py-3">
+				<div id="cameraPreview" v-show="!play" class="grow-0 relative">
+					<div class="cameraVideoPreview"></div>
+				</div>
+				<div id="videoPreview" v-if="play" class="w-full grow-0 relative">
+					<video ref="videoPlayer" controls autoplay playsinline="true" @pause="play = !play">
+						<source :src="getUrl(videoFile.uri)" type="video/mp4" />
+					</video>
+				</div>
+				<div class="video-overlay" v-if="!play" :class="{ active: !recording && video }">
+					<div class="record_button mt-10 mb-4">
+						<div @click="playVideo()" class="start w-full flex justify-center items-center">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="white"
+								viewBox="0 0 24 24"
+								stroke-width="0"
+								stroke="currentColor"
+								class="w-6 h-6 mr-2">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+							</svg>
+
+							<span class="font-bold">Play Video</span>
+						</div>
+					</div>
+					<div class="record_button mb-10">
+						<div @click="recordAgain()" class="start w-full flex justify-center items-center">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke-width="2.5"
+								stroke="currentColor"
+								class="w-5 h-5 mr-2">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+							</svg>
+
+							<span class="font-bold">Record Again</span>
+						</div>
+					</div>
+				</div>
+				<div class="w-full overlay h-5 z-10 flex items-center justify-between py-3 bg-black">
 					<div
 						class="flex text-white text-xs bg-black rounded-full py-2 px-3 ml-3 items-center justify-center"
 						v-if="recording">
@@ -19,8 +65,7 @@
 						<ion-icon :icon="cameraReverseOutline"></ion-icon>
 					</ion-button>
 				</div>
-				<div class="w-full relative grow flex flex-col">
-					<p v-if="videoFile">{{ videoFile }}</p>
+				<div class="w-full mt-10 relative grow flex flex-col bg-black">
 					<div class="flex items-center justify-center h-full w-full relative">
 						<Splide
 							v-if="questions"
@@ -32,16 +77,17 @@
 								:key="index"
 								class="slide text-center pt-1 pb-6 px-10 flex items-center justify-center">
 								<div class="w-full flex h-full flex-col items-center mx-auto">
-									<h1 class="mb-0 text-2xl mb-1">{{ item.title[0].text }}</h1>
-									<p class="text-xl mt-1 mb-3">{{ item.description[0].text }}</p>
+									<h1 class="mb-0 text-2xl mb-1">Question {{ index + 1 }} of {{ questions.length }}</h1>
+									<p class="text-xl mt-1 mb-3">{{ item.prompt }}</p>
+
 									<div class="record_button" :class="{ active: recording, next: video }">
 										<div
 											@click="recordVideo()"
 											v-if="!recording && !video"
 											class="start w-full flex flex-col justify-center items-center">
 											<span class="font-bold">Record My Answer</span>
-											<!-- <span class="text-xs text-white/70">Maximum length is 2 minutes</span> -->
 										</div>
+
 										<div
 											@click="nextQ(index)"
 											v-if="!recording && video && index + 1 < questions.length"
@@ -49,7 +95,7 @@
 											<span class="font-bold">Next Question</span>
 										</div>
 										<div
-											@click="finish()"
+											@click="finish(index)"
 											v-if="!recording && video && index + 1 == questions.length"
 											class="start w-full flex flex-col justify-center items-center">
 											<span class="font-bold">Send Video for Approval</span>
@@ -93,6 +139,9 @@ import {
 } from '@ionic/vue';
 import { closeOutline, cameraReverseOutline } from 'ionicons/icons';
 import { CameraPreview } from '@capacitor-community/camera-preview';
+import { Geolocation } from '@capacitor/geolocation';
+
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -100,28 +149,52 @@ import { useRoute, useRouter } from 'vue-router';
 import '@splidejs/vue-splide/css';
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 
-import useStore from '../../../stores/main';
+import useStore from '@/stores/main/';
+import { Capacitor } from '@capacitor/core';
+
+import { supabase } from '@/helpers/api';
+
+const VIDEO_DIR = 'stored-videos';
 
 const cameraOptions = {
 	position: 'front',
 	height: 400,
+	toBack: true,
 	parent: 'cameraPreview',
-	className: 'cameraPreview'
+	className: 'cameraVideoPreview'
 };
 
 const store = useStore();
+
 const route = useRoute();
 const router = useRouter();
 
+const action = store.global.programmes.filter(x => x.id == route.params.slug)[0];
+const steps = store.getSteps(action.id).sort((a, b) => a.id - b.id);
+const questions = store.global.questions.filter(x => x.programme_step_id === steps[0].id);
 const cameraActive = ref(false);
-const qIndex = ref(1);
+const play = ref(false);
 const recording = ref(false);
 const video = ref(false);
 const videoFile = ref(null);
-const action = ref(null);
-const questions = ref(null);
 const timer = ref(0);
 const splide = ref();
+const videoPlayer = ref();
+const responses = ref([]);
+function getUrl(value) {
+	return Capacitor.convertFileSrc(value);
+}
+
+function playVideo() {
+	play.value = !play.value;
+
+	if (play.value) {
+		videoPlayer.value.load();
+		videoPlayer.value.play();
+	} else {
+		videoPlayer.value.pause();
+	}
+}
 
 function recTime(time) {
 	var minutes = Math.floor(time / 60);
@@ -132,6 +205,18 @@ function recTime(time) {
 	}
 
 	return str_pad_left(minutes, '0', 2) + ':' + str_pad_left(seconds, '0', 2);
+}
+
+async function saveVideo(path) {
+	const fileName = `${new Date().getTime()}.mp4`;
+
+	const savedFile = await Filesystem.copy({
+		from: `file://${path}`,
+		to: `${VIDEO_DIR}/${fileName}`,
+		toDirectory: Directory.Data
+	});
+
+	videoFile.value = savedFile;
 }
 
 async function recordVideo() {
@@ -147,94 +232,162 @@ async function recordVideo() {
 		}
 	}, 1000);
 	if (!recording.value) {
-		videoFile.value = await CameraPreview.stopRecordVideo();
+		const videoData = await CameraPreview.stopRecordVideo();
+		await saveVideo(videoData.videoFilePath);
 	} else {
 		CameraPreview.startRecordVideo(cameraOptions);
 	}
 }
 
+const dummyVideos = [
+	'https://cloud.vashgreenschools.org/index.php/s/ZpNaL2miYBEJqWd/download/UG1.mp4',
+	'https://2050today.org/wp-content/uploads/2020/07/Video-Placeholder.mp4',
+	'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
+	'https://cloud.vashgreenschools.org/index.php/s/ZpNaL2miYBEJqWd/download/UG1.mp4',
+	'https://2050today.org/wp-content/uploads/2020/07/Video-Placeholder.mp4'
+];
+
 function nextQ(index) {
 	video.value = false;
 	timer.value = 0;
 	splide.value.go(index + 1);
+	const resp = {
+		programme_response_id: questions[index].id,
+		url: dummyVideos[index]
+	};
+	responses.value.push(resp);
 }
 
 async function openCamera() {
 	cameraActive.value = true;
-
 	await CameraPreview.start(cameraOptions);
+}
+
+async function recordAgain() {
+	timer.value = 0;
+	play.value = false;
+	recordVideo();
 }
 
 async function flipCamera() {
 	await CameraPreview.flip();
 }
 
-async function getActions() {
-	const response = await fetch('https://api.climategains.org/api/v1/countries', {
-		method: 'GET',
-		headers: {
-			'x-api-key': 'rpA94jzJjrBh9IclvNKvM34xhHwo282g7qZ6mJ0sKITOBy39',
-			'Content-Type': 'application/json; charset=utf-8'
-		}
-	});
-	const actions = await response.json();
-	const act = actions.data.filter(x => x.id === route.params.slug)[0];
-	action.value = act;
-	questions.value = act.settings.project.steps[0].content;
+async function fetchPlace(coordinates) {
+	const response = await fetch(
+		`https://api.mapbox.com/geocoding/v5/mapbox.places/${coordinates.longitude},${coordinates.latitude}.json?access_token=pk.eyJ1Ijoib3dlbmdvdCIsImEiOiJjbDcyNzFwMGwwaG5lM29uOWI3dTVsM2ZqIn0.4xI9UmoEHiQHFJ8C9mEvNg`
+	);
+
+	const place = await response.json();
+	console.log(place);
+	return place.features[4].place_name;
 }
 
-async function sendApplication() {
-	const payload = `{"country":"${action.value.id}","identity":{"type":"nationalregistryid","identityId":"1234447"}}`;
+async function createResponse(item, position, stepId) {
+	console.log(item);
+	console.log(position);
+	console.log(stepId);
+	const { data, error } = await supabase
+		.from('response')
+		.insert([
+			{
+				creator: store.user.account.id,
+				programme_response_id: item.programme_response_id,
+				step_id: stepId,
+				url: item.url,
+				geo_lat: position.coords.latitude || '',
+				geo_long: position.coords.longitude || ''
+			}
+		])
+		.select();
 
-	fetch('https://api.climategains.org/api/v1/me/applications', {
-		method: 'POST',
-		headers: {
-			authorization: `Bearer ${store.token}`,
-			'x-api-key': 'rpA94jzJjrBh9IclvNKvM34xhHwo282g7qZ6mJ0sKITOBy39',
-			'Content-Type': 'application/json; charset=utf-8'
-		},
-		body: payload
-	})
-		.then(res => res.json())
-		.then(response => {
-			window.console.log(response);
-		});
+	console.log(error);
+	console.log(data);
+	return data;
+}
+
+async function createStep(id) {
+	const { data, error } = await supabase
+		.from('step')
+		.insert([{ project_id: id, programme_step_id: steps[0].id, submitter: store.user.account.id }])
+		.select();
+
+	console.log(error);
+	console.log(data);
+	return data;
+}
+
+function profile() {
+	if (store.user.account) {
+		return store.getUser(store.user.account.id)[0];
+	} else return false;
 }
 
 async function createProject() {
-	const projectId = `${store.user.firstname}-${store.user.company}-${Date.now()}`;
-	const payload = `{"country":"${action.value.id}", "monitoring": false, "name": "${projectId}","sector": "${action.value.defaultSector}"}`;
-	window.console.log(payload);
-	fetch('https://api.climategains.org/api/v1/projects', {
-		method: 'POST',
-		headers: {
-			authorization: `Bearer ${store.token}`,
-			'x-api-key': 'rpA94jzJjrBh9IclvNKvM34xhHwo282g7qZ6mJ0sKITOBy39',
-			'Content-Type': 'application/json; charset=utf-8'
-		},
-		body: payload
-	})
-		.then(res => res.json())
-		.then(response => {
-			store.project = response;
-			router.push('../result');
-		})
-		.catch(error => {
-			console.log(error);
-		});
+	const projectId = `${store.user.account.id}-${Date.now()}`;
+	const position = await Geolocation.getCurrentPosition();
+	const place = await fetchPlace(position.coords);
+	const projectName = action.name.split(' ')[0] + '-' + profile().fullname.toLowerCase().replace(' ', '-');
+	const { data, error } = await supabase
+		.from('project')
+		.insert([
+			{
+				programme_id: action.id,
+				name: projectName,
+				geo_lat: position.coords.latitude,
+				geo_long: position.coords.longitude,
+				location_name: place
+			}
+		])
+		.select();
+	const project_id = data[0].id;
+	const step = await createStep(project_id);
+	const stepId = step[0].id;
+
+	for (let i = 0; i < responses.value.length; i++) {
+		createResponse(responses.value[i], position, stepId);
+	}
+
+	console.log(data);
+	console.log(error);
+	console.log(step);
+	await store.fetchProjects();
+	await store.fetchSteps();
+	await store.fetchRoles();
+	router.push(`/apply/result/${data[0].id}`);
 }
 
 // const result = await CameraPreview.capture(cameraOptions);
 // const base64PictureData = result.value;
-async function finish() {
-	await sendApplication();
+async function finish(index) {
+	const resp = {
+		programme_response_id: questions[index].id,
+		url: dummyVideos[index]
+	};
+	responses.value.push(resp);
 	await createProject();
 }
+
 onIonViewWillEnter(() => {
-	getActions();
 	openCamera();
 	timer.value = 0;
 	video.value = false;
+
+	Filesystem.readdir({
+		path: VIDEO_DIR,
+		directory: Directory.Data
+	}).then(
+		result => {
+			console.log(result.files);
+		},
+		async err => {
+			// Folder does not yet exists!
+			await Filesystem.mkdir({
+				path: VIDEO_DIR,
+				directory: Directory.Data
+			});
+		}
+	);
 });
 
 onIonViewWillLeave(() => {
@@ -288,11 +441,36 @@ onIonViewWillLeave(() => {
 	z-index: 10;
 }
 
+#videoPreview {
+	width: 100%;
+	height: 400px;
+	position: relative;
+	z-index: 10;
+}
+
+#videoPreview video {
+	@apply absolute w-full h-full top-0 left-0;
+	object-fit: cover !important;
+}
+
+.video-overlay {
+	@apply w-full z-20 bg-black/80 absolute top-0 flex flex-col items-center justify-center;
+	height: 400px;
+	opacity: 0;
+	transform: scale(0.8);
+}
+
+.video-overlay.active {
+	opacity: 1;
+	transform: scale(1);
+	transition: all 0.18s ease-out;
+}
+
 .icons {
 	position: relative;
 }
 .overlay {
-	@apply w-full bg-white/30 py-0 relative;
+	@apply w-full bg-gray-600 py-0 relative;
 	width: 100%;
 	z-index: 20;
 }

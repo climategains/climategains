@@ -4,6 +4,7 @@ import { IonContent, IonButtons, IonBackButton, IonPage, IonHeader, IonTitle, Io
 
 <template>
 	<ion-page>
+		<slot name="default-head-view"> </slot>
 		<ion-header class="ion-no-border">
 			<ion-toolbar>
 				<ion-buttons slot="start">
@@ -14,6 +15,7 @@ import { IonContent, IonButtons, IonBackButton, IonPage, IonHeader, IonTitle, Io
 				</ion-title>
 			</ion-toolbar>
 		</ion-header>
+
 		<ion-content fullscreen>
 			<slot name="default-view-body"></slot>
 		</ion-content>

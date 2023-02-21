@@ -20,7 +20,7 @@ const showModal = () => {
 </script>
 <template>
 	<base-view>
-		<template #default-view-title> Validation </template>
+		<template #default-view-title> Become an Activist </template>
 		<template #default-view-body>
 			<!-- <swiper
     :slides-per-view="1"
@@ -51,7 +51,7 @@ const showModal = () => {
 							</g>
 						</svg>
 
-						<p>Help combat greenwashing and ensure that funding goes straight to climate action</p>
+						<p>Can generate an income through positive actions</p>
 					</li>
 					<li class="advantage">
 						<svg
@@ -71,7 +71,7 @@ const showModal = () => {
 							</g>
 						</svg>
 
-						<p>Positively impact global communities</p>
+						<p>Improve the quality of life and resiliency of your community</p>
 					</li>
 					<!-- <li class="advantage">
 						<svg class="w-12 h-12 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 549 550">
@@ -97,25 +97,17 @@ const showModal = () => {
 							</g>
 						</svg>
 
-						<p>Take the power into your own hands to improve living conditions now and for our planet's future</p>
-					</li>
-					<li class="advantage">
-						<svg
-							class="w-6 bg-orange-500 p-3 rounded-full h-6 mr-6"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="#fff"
-							viewBox="0 0 390 536">
-							<path
-								d="M110 536c-8 0-13-6-14-14V353a78 78 0 0 1-61-83c-3-10-8-18-15-26a71 71 0 0 1 1-99c9-10 14-22 15-35a74 74 0 0 1 74-74c12 0 24-5 33-14a74 74 0 0 1 104 0c9 9 21 14 33 14a74 74 0 0 1 74 73c0 14 6 26 15 36a71 71 0 0 1 1 99c-8 8-13 17-15 28a78 78 0 0 1-57 80v170a13 13 0 0 1-19 12l-84-46-79 46-6 2Zm85-76c-2-5 76 40 77 40V354c-28 8-42 38-78 35-31 3-47-24-71-34v145c3-1 70-43 72-40Zm-82-133c50 2 65 65 116 21 15-13 33-20 52-21 12 1 24-4 32-13 11-12 17-27 16-43 2-16 9-31 20-43 21-24 18-45-1-68a75 75 0 0 1-20-52 47 47 0 0 0-48-46c-19 0-38-8-52-22a49 49 0 0 0-67 0 72 72 0 0 1-51 22 47 47 0 0 0-48 47c4 36-34 54-35 85-3 27 33 44 34 75-1 33 19 60 52 58Zm82-17A112 112 0 0 1 81 195c0-146 220-159 229 0a115 115 0 0 1-115 115Zm0-204a86 86 0 0 0-88 89c-1 112 171 122 177 0a89 89 0 0 0-89-89Z" />
-						</svg>
-
-						<p>Have access to our education platform, experts, and sweet incentives</p>
+						<p>Improve global living conditions now and for our planet's future</p>
 					</li>
 				</ul>
 			</div>
 
-			<div class="col-4 mx-auto text-center mt-0">
-				<div class="action_button" @click="() => router.push('../validator/2')">Next</div>
+			<ion-modal :is-open="modalIsOpen" @did-dismiss="modalIsOpen = false">
+				<about-component @on-close="modalIsOpen = false" />
+			</ion-modal>
+
+			<div class="col-4 mx-auto text-center mt-3">
+				<div class="action_button" @click="() => router.push('./2')">Next</div>
 			</div>
 		</template>
 	</base-view>
@@ -129,7 +121,7 @@ const showModal = () => {
 	cursor: pointer;
 }
 .advantage {
-	@apply flex justify-start items-center font-normal text-lg border-b pl-6 pt-4 pr-0 pb-4    border-gray-100/20 pl-0 pr-0;
+	@apply flex justify-start items-center font-normal text-lg border-b p-6 pr-0 pb-4    border-gray-100/20 pl-0 pr-0;
 }
 .advantage p {
 	@apply my-0 font-normal text-xl;

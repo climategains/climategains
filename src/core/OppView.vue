@@ -12,7 +12,7 @@ import {
 	IonTitle,
 	IonToolbar
 } from '@ionic/vue';
-import { personCircle, flame, home, search } from 'ionicons/icons';
+import { personCircleSharp, flame, earthOutline, leaf, search, homeOutline } from 'ionicons/icons';
 import { ref } from 'vue';
 
 const header = ref(false);
@@ -28,15 +28,15 @@ const header = ref(false);
 				<ion-router-outlet></ion-router-outlet>
 				<ion-tab-bar slot="bottom">
 					<ion-tab-button tab="home" href="./">
-						<ion-icon :icon="home"></ion-icon>
+						<ion-icon :icon="homeOutline"></ion-icon>
 					</ion-tab-button>
 
-					<ion-tab-button tab="actions" href="/actions">
-						<ion-icon :icon="flame"></ion-icon>
+					<ion-tab-button tab="list" href="/list">
+						<ion-icon :icon="earthOutline"></ion-icon>
 					</ion-tab-button>
 
 					<ion-tab-button tab="account" href="/account">
-						<ion-icon :icon="personCircle"></ion-icon>
+						<ion-icon :icon="personCircleSharp"></ion-icon>
 					</ion-tab-button>
 
 					<ion-tab-button tab="search" href="/search">

@@ -7,8 +7,6 @@ import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { onIonViewWillEnter, onIonViewWillLeave } from '@ionic/vue';
 import OppView from '../../core/OppView.vue';
 
-import useStore from '../stores/main';
-
 const files = ref(null);
 const vidIndex = ref(3);
 

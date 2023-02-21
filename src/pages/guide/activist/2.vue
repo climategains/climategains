@@ -6,7 +6,7 @@ import { IonButton, IonModal } from '@ionic/vue';
 import AboutComponent from 'components/about/AboutComponent.vue';
 
 import '@splidejs/vue-splide/css';
-import useStore from '../../stores/main/index.js';
+import useStore from '../../../stores/main/index.js';
 
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 
@@ -22,7 +22,7 @@ const showModal = () => {
 
 function proceed() {
 	store.role = 'activist';
-	router.push('../actions');
+	router.push('../../list');
 }
 </script>
 <template>
@@ -331,70 +331,7 @@ function proceed() {
 						If your application is validated, you will get the first portion of funding to get started.
 					</p>
 				</SplideSlide>
-				<SplideSlide class="px-12 py-14 flex flex-col items-center justify-center bg-gray-200/20">
-					<svg xmlns="http://www.w3.org/2000/svg" height="140px" viewBox="0 0 690 555">
-						<g fill="none" fill-rule="nonzero">
-							<path fill="#FFB6B6" d="M480 539h-13l-6-49h19z" />
-							<path fill="#2F2E41" d="m480 535-14-5-8 5c-9 0-16 7-16 16v1h41v-17h-3Z" />
-							<path fill="#FFB6B6" d="m595 523-11 6-28-42 17-8z" />
-							<path
-								fill="#2F2E41"
-								d="m596 518-3 1-15 1-4 9a16 16 0 0 0-7 21v1l37-19-8-14ZM471 275l71 2s6 14 6 26c0 4-3 30-1 35l-1 5c0 2 2 0 2 3l-2 5 4 12 8 68s17 47 21 48c6 1 11 12 7 15l-23 8c-1 1-5-1-2-6l-3 1v-6c-5-11-12-25-19-32a69 69 0 0 1-18-39l-15-86-6 24-4 5 1 10v10l-11 41s-2 76 1 79c2 1 8 17-4 19l-21-2s-3-6-1-8c1-2 1-2-1-5l-1-9c-2-28-4-56-3-83 1-46 7-98 7-99v-6l3-10 5-25Z" />
-							<circle cx="570.2" cy="255.8" r="27.8" fill="#6C63FF" />
-							<path fill="#FFF" d="m566 270-2-1-8-10a3 3 0 0 1 5-4l5 7 13-19a3 3 0 1 1 5 3l-15 23-2 1h-1Z" />
-							<path fill="#FFB8B8" d="M584 285a8 8 0 0 0-7-10l-15-48-9 11 15 45a8 8 0 0 0 16 2Z" />
-							<path
-								fill="#E6E6E6"
-								d="m574 261-2-6 2-4v-1l-1-2-3-2 1-4-4-12-1-2-24-48-6-12-1-2-4-6-6-9a13 13 0 0 0-10-6h-3a12 12 0 0 0-8 5c-2 2-3 5-3 8l1 5v4l8 16 1 1 26 47 8 14 1 2 5 4-1 3v6l5 3 6 7 2-1h1l6-2 4-1h1l-1-5Z" />
-							<path
-								fill="#F2F2F2"
-								d="M681 482c-4-5-10-7-16-6l-1 1-6 22-4-18v-1c-6 3-12 6-17 11a81 81 0 0 0-30 60v1h1l16-6c14 1 29-4 39-15 7-7 11-16 16-24l4-8c3-6 2-12-2-17Z" />
-							<path fill="#3F3D56" d="M262 110h-2V33h145v2H262z" />
-							<circle cx="427.2" cy="27.8" r="27.8" fill="#6C63FF" />
-							<path fill="#FFF" d="m423 42-2-1-8-10a3 3 0 0 1 5-4l5 7 13-19a3 3 0 1 1 5 3l-15 23-2 1h-1Z" />
-							<path fill="#3F3D56" d="M164 297h-2v77h145v-2H164z" />
-							<circle cx="329.2" cy="373.8" r="27.8" fill="#6C63FF" />
-							<path fill="#FFF" d="m325 388-2-1-8-10a3 3 0 0 1 5-4l5 7 13-19a3 3 0 1 1 5 3l-15 23-2 1h-1Z" />
-							<path
-								fill="#E6E6E6"
-								d="m549 300-1 6c-18 3-34 3-41-8-10-12-23-12-37-6l-2-2-3-3 3-3-3-6 2-8h3l-1-7-1-3 4-4 3-10-3-21c-2-28 3-56 17-81l8-7 4-3 5-9 4 1 14 1v1l3 8 17 18v8l-1 4v2l-1 12-5 48v3l-4 28c6 6 12 17 14 28v4l2 4v5Z" />
-							<circle cx="515.2" cy="98.9" r="23" fill="#FFB6B6" />
-							<path
-								fill="#2F2E41"
-								d="M543 93c-1-5-5-8-10-9a16 16 0 0 0-22-15l-5-2-4 2c-7 5-10 13-9 21 0-2 1 2 3 2l6 3 6 2c2 1 3 9 1 15l1 3c1 1 2-1 4-1l2 2-2 3-3 2h1c0 2 2 2 3 2 2 2 18-3 18-7l9-10c2-4 2-9 1-13Z" />
-							<path
-								fill="#E6E6E6"
-								d="M561 163c0 2-2 4-5 5h-4l-4-1a69 69 0 0 1-17-7 75 75 0 0 1-13-10l1 1-4-6-5-6-2-3c-2-3-4-7-1-9l3-1 2 1 5 4c1-2 4-3 7-3h1c2 1 4-1 6 1l3 5 4 1 2 5 5-1 3 6h6c2 2 5 3 6 6s0 6-2 7c2 0 4 2 3 5Z" />
-							<path
-								fill="#000"
-								d="M543 166v2l-8-2c-4-1-7-3-9-6a190 190 0 0 0-16-21c12 15 23 23 34 23 0 0 1 4-1 4Z"
-								opacity=".2" />
-							<path fill="#FFB8B8" d="M435 45a8 8 0 0 0 7 10l13 49 10-11-15-46a8 8 0 0 0-15-2Z" />
-							<path
-								fill="#E6E6E6"
-								d="M513 170v-5l-9-15v-1l-7-12-31-59-3-1V67l-4-3-2-3h-2l-11 3-2 2-2 6v8l5 1-2 5 5 15c7 27 15 50 30 63l1 2 10 16c3 4 8 6 13 6a13 13 0 0 0 8-5c2-3 3-5 3-8v-5Z" />
-							<path fill="#CACACA" d="M688 554H416a1 1 0 0 1 0-2h272a1 1 0 0 1 0 2Z" />
-							<path
-								fill="#F2F2F2"
-								d="M84 154c0-15 5-30 16-41L64 65a17 17 0 0 0-26-3A126 126 0 0 0 1 172a17 17 0 0 0 23 14l61-20-1-12Z" />
-							<path
-								fill="#E6E6E6"
-								d="m87 173-64 21a17 17 0 0 0-10 24c18 37 54 63 95 69a17 17 0 0 0 20-17v-59c-19-5-35-19-41-38Z" />
-							<path
-								fill="#3F3D56"
-								d="M278 210c-2-5-6-9-12-11l-69-22c-8 19-26 33-47 35v73a19 19 0 0 0 22 19c46-8 85-36 106-78 2-5 2-11 0-16Z" />
-							<path
-								fill="#6C63FF"
-								d="M261 44a19 19 0 0 0-29 3l-48 65a59 59 0 0 1 17 46l76 24a19 19 0 0 0 25-15 143 143 0 0 0-41-123Z" />
-							<path
-								fill="#E6E6E6"
-								d="M143 95c10 0 20 2 29 7l29-40a17 17 0 0 0-6-25c-37-18-80-18-116 0a17 17 0 0 0-6 25l33 46c10-9 23-13 37-13Z" />
-						</g>
-					</svg>
-					<p class="mt-4">
-						With every step of the process you complete, you are paid a larger amount than the step before.
-					</p>
-				</SplideSlide>
+
 				<SplideSlide class="px-12 flex flex-col items-center justify-center bg-gray-200/20">
 					<svg width="76%" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 883.8 477.5">
 						<path

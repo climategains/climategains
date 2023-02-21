@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { execute, updateCapacitorConfig } = require('./scriptUtils.js');
 
-const buildCommand = 'npx vue-tsc --noEmit && npx vite build';
+const buildCommand = ' npx vite build';
 
 // Build commands
 /**

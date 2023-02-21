@@ -22,8 +22,6 @@ app.component('BaseView', BaseView);
 
 app.component('OppView', OppView);
 
-
-
 router.isReady().then(() => {
 	app.mount('#app');
 });

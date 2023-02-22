@@ -1,20 +1,16 @@
 <!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <script setup lang="ts">
-import OppView from 'core/OppView.vue';
-import accountView from 'components/account/index.vue';
 import 'swiper/css';
 import { useRouter } from 'vue-router';
-import { ref, onMounted } from 'vue';
-import { storeToRefs } from 'pinia';
-import useStore from '../../stores/main';
+import useStore from '@/store';
+import accountView from '@/components/account/index.vue';
 
 const store = useStore();
-const { user } = storeToRefs(store);
 
 const router = useRouter();
 
-const tokenId = ref(null);
 store.fetchRoles();
+
 function profile() {
 	if (store.user.account) {
 		return store.getUser(store.user.account.id)[0];
@@ -209,7 +205,12 @@ function logOut() {
 					</li>
 				</ul>
 			</div>
-			<div class="py-4 px-6 bg-blue/10" v-else>
+			<div class="mx-4 mt-20">
+				<h1 class="text-3xl text-left mb-0">Welcome To Climate Gains</h1>
+				<p class="text-left text-xl">
+					In order to go further you'll need to create an account or login to your existing account.
+				</p>
+
 				<accountView />
 			</div>
 		</template>

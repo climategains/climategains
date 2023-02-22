@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { ref, reactive, computed, watch } from 'vue';
+import { ref, reactive, watch } from 'vue';
 import '@splidejs/vue-splide/css';
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 
-import useStore from '@/stores/main';
-import { storeToRefs } from 'pinia';
+import useStore from '@/store';
 
-import { IonButton, IonModal } from '@ionic/vue';
+import { IonModal } from '@ionic/vue';
 import { useRouter } from 'vue-router';
 
 import { supabase } from '@/helpers/api';
@@ -70,11 +69,6 @@ watch(
 
 <template>
 	<div class="flex items-start flex-col justify-start">
-		<h1 class="text-3xl text-left mb-0">Welcome To Climate Gains</h1>
-		<p class="text-left text-xl">
-			In order to go further you'll need to create an account or login to your existing account.
-		</p>
-
 		<Splide ref="splide" class="w-full" :options="{ autoHeight: true, arrows: false, pagination: false, drag: false }">
 			<SplideSlide class="slide w-full">
 				<div class="w-full">

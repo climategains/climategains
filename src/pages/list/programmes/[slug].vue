@@ -9,7 +9,7 @@ import { useRouter, useRoute } from 'vue-router';
 
 import accountView from '@/components/account/index.vue';
 
-import useStore from '@/stores/main';
+import useStore from '@/store';
 
 const store = useStore();
 
@@ -210,7 +210,11 @@ function signup() {
 							</ion-toolbar>
 						</ion-header>
 						<ion-content class="px-6">
-							<div class="px-6">
+							<div class="px-6 mt-10">
+								<h1 class="text-3xl text-left mb-0">Welcome To Climate Gains</h1>
+								<p class="text-left text-xl">
+									In order to go further you'll need to create an account or login to your existing account.
+								</p>
 								<accountView
 									:callback="`/apply/record/${programme.id}`"
 									@on-close="modalIsOpen = false"

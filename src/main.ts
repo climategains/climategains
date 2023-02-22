@@ -8,13 +8,13 @@ import App from './App.vue';
 
 import router from './router';
 
-import 'core';
+import 'views';
 
 import VueSplide from '@splidejs/vue-splide';
 
-import PageView from './core/PageView.vue';
+import PageView from './views/PageView.vue';
 
-import TabView from './core/TabView.vue';
+import TabView from './views/TabView.vue';
 
 const app = createApp(App).use(createPinia()).use(IonicVue).use(VueSplide).use(router);
 

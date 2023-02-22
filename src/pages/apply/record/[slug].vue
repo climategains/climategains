@@ -149,7 +149,7 @@ import { useRoute, useRouter } from 'vue-router';
 import '@splidejs/vue-splide/css';
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 
-import useStore from '@/stores/main/';
+import useStore from '@/store/';
 import { Capacitor } from '@capacitor/core';
 
 import { supabase } from '@/helpers/api';

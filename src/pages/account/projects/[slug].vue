@@ -192,7 +192,7 @@
 <script setup async>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import useStore from '@/stores/main';
+import useStore from '@/store';
 
 const store = useStore();
 

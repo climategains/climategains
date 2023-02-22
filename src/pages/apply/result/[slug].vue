@@ -187,10 +187,10 @@
 	</result-view>
 </template>
 <script setup async>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
-import useStore from '@/stores/main';
-import ResultView from '@/core/ResultView.vue';
+import useStore from '@/store';
+import ResultView from '@/views/ResultView.vue';
 
 const store = useStore();
 

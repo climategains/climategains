@@ -67,8 +67,8 @@
 <script setup async>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
-import ResultView from '@/core/ResultView.vue';
-import useStore from '@/stores/main';
+import ResultView from '@/views/ResultView.vue';
+import useStore from '@/store';
 
 const store = useStore();
 const route = useRoute();

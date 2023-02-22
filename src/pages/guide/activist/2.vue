@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import { IonButton, IonModal } from '@ionic/vue';
 
 import '@splidejs/vue-splide/css';
-import useStore from '@/stores/main/index.js';
+import useStore from '@/store/index.js';
 
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 

@@ -8,7 +8,7 @@ import '@splidejs/vue-splide/css';
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 
 import { useRouter } from 'vue-router';
-import useStore from '@/stores/main/index.js';
+import useStore from '@/store/index.js';
 
 const store = useStore();
 const router = useRouter();

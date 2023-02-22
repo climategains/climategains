@@ -26,6 +26,14 @@ const useStore = defineStore('account', {
 		role: 'activist'
 	}),
 	actions: {
+		async initializeApp() {
+			this.fetchProgrammes();
+			this.fetchProjects();
+			this.fetchSteps();
+			this.fetchUsers();
+			this.fetchQuestions();
+			this.fetchMedia();
+		},
 		async fetchUsers() {
 			let { data: profile, error } = await supabase.from('profile').select('*');
 			this.global.users = profile;

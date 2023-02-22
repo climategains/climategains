@@ -6,8 +6,8 @@
 			<div class="text-center">Start</div>
 		</template>
 		<template #default-view-body>
-			<div class="p-6">
-				<h2 class="text-2xl font-bold">Search</h2>
+			<div class="mx-4 mt-20">
+				<h1 class="mb-0 p-0">Search</h1>
 			</div>
 		</template>
 	</tab-view>

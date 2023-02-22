@@ -1,7 +1,7 @@
 <script setup async lang="ts">
 import { ref } from 'vue';
 
-import useStore from '@/stores/main';
+import useStore from '@/store';
 import { useRouter } from 'vue-router';
 
 import icon from '@/components/ui/icon.vue';

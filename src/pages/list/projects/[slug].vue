@@ -9,7 +9,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { MapboxMap, MapboxMarker } from '@studiometa/vue-mapbox-gl';
 
-import useStore from '@/stores/main';
+import useStore from '@/store';
 
 const store = useStore();
 
@@ -231,7 +231,11 @@ onMounted(async () => {
 						</ion-toolbar>
 					</ion-header>
 					<ion-content>
-						<div class="px-6">
+						<div class="px-6 mt-10">
+							<h1 class="text-3xl text-left mb-0">Welcome To Climate Gains</h1>
+							<p class="text-left text-xl">
+								In order to go further you'll need to create an account or login to your existing account.
+							</p>
 							<accountView
 								class="mx-10"
 								:callback="`/verify/${project.id}`"

@@ -1,9 +1,7 @@
 <!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <script setup lang="ts">
-import OppView from 'core/OppView.vue';
 import { useRouter } from 'vue-router';
-import { onMounted, reactive, ref } from 'vue';
-import useStore from '@/stores/main/index.js';
+import useStore from '@/store/index.js';
 import icon from '@/components/ui/icon.vue';
 
 const store = useStore();
@@ -27,10 +25,6 @@ function getIcon(value) {
 	if (value === 'Energy Demand') {
 		return 'energy';
 	}
-}
-
-function getFunds(steps) {
-	return steps.map(x => x.prefunding).reduce((s, v) => s + (v || 0), 0);
 }
 
 function getCountry(value) {

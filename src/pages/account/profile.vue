@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { getDate, getTime } from '@/helpers/parsers';
-import useStore from '@/stores/main';
+import useStore from '@/store';
 
 const store = useStore();
 

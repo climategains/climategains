@@ -10,7 +10,7 @@ import '@splidejs/vue-splide/css';
 
 import { useRoute, useRouter } from 'vue-router';
 
-import useStore from '@/stores/main';
+import useStore from '@/store';
 
 const splide = ref();
 

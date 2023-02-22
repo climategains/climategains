@@ -75,6 +75,9 @@ const useStore = defineStore('account', {
 		getQuestion() {
 			return id => this.global.questions.filter(x => x.id === id);
 		},
+		getProgrammeQuestions() {
+			return id => this.global.questions.filter(x => x.programme_step_id === id);
+		},
 		getPoster() {
 			return id => this.getMedia(id).filter(x => x.role === 'poster')[0];
 		},

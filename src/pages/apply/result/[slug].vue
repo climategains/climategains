@@ -196,8 +196,6 @@ const store = useStore();
 
 const route = useRoute();
 
-store.fetchProjects();
-
 const project = store.getProject(route.params.slug);
 
 const programme = store.getProgramme(project.programme_id);

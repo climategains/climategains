@@ -6,7 +6,7 @@ import 'swiper/css';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
-import useStore from '../../stores/main';
+import useStore from '@/stores/main';
 
 const store = useStore();
 const { user } = storeToRefs(store);

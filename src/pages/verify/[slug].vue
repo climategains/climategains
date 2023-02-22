@@ -20,6 +20,7 @@ const router = useRouter();
 
 const selected = ref('');
 const response = ref([]);
+const questions = ref([]);
 
 type myObj = {
 	[key: string]: any;
@@ -29,7 +30,7 @@ const step: myObj = ref({});
 const project: myObj = ref({});
 const programme: myObj = ref({});
 
-const responseIndex = ref(0);
+const i = ref(0);
 
 function getDate(string) {
 	let d = new Date(string);
@@ -44,12 +45,21 @@ function showModal(string) {
 	selected.value = string;
 }
 async function nextResponse() {
-	if (responseIndex.value + 1 < response.value.length) {
-		responseIndex.value = responseIndex.value + 1;
+	if (i.value + 1 < response.value.length) {
+		i.value = i.value + 1;
 	} else {
 		router.push(`./result/${project.value.id}`);
 	}
 	selected.value = null;
+}
+
+function entry(index) {
+	var q = questions.value[index];
+	var obj = {
+		question: q,
+		response: response.value.filter(x => x.programme_response_id == q.id)[0]
+	};
+	return obj;
 }
 
 onMounted(async () => {
@@ -58,6 +68,9 @@ onMounted(async () => {
 
 	project.value = store.getProject(step.value[0].project_id);
 	programme.value = store.getProgramme(project.value.programme_id);
+	questions.value = store.global.questions
+		.filter(x => x.programme_step_id === programme.value.id)
+		.sort((a, b) => a.order - b.order);
 });
 selected.value = 'welcome';
 </script>
@@ -68,22 +81,18 @@ selected.value = 'welcome';
 			<div class="ml-0">Climate Actions</div>
 		</template>
 		<template #default-view-body>
-			<div v-if="step && response[responseIndex]">
+			<div v-if="questions[i] && response[i]">
 				<div class="w-full flex flex-col items-start">
-					<video class="w-full" playsinline="true" controls :src="response[responseIndex].url"></video>
+					<video class="w-full" playsinline="true" controls :src="entry(i).response.url"></video>
 				</div>
 				<div class="py-3 w-full text-center border-b border-white/20 bg-white/10">
 					<div class="mx-4">
-						<h3 class="text-xl my-0 py-0 font-bold">
-							Response to Question {{ responseIndex + 1 }} of {{ response.length }}
-						</h3>
-						<span class="text-lg">{{
-							store.getQuestion(response[responseIndex].programme_response_id)[0].prompt
-						}}</span>
+						<h3 class="text-xl my-0 py-0 font-bold">Response to Question {{ i + 1 }} of {{ response.length }}</h3>
+
+						<span class="text-lg">{{ entry(i).question.prompt }}</span>
 					</div>
 				</div>
 			</div>
-
 			<div class="flex justify-between items-center">
 				<div class="action_button font-bold bg-green-700" @click="showModal('verify')">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 mr-2">
@@ -118,11 +127,11 @@ selected.value = 'welcome';
 					Send a Question
 				</div>
 			</div>
-			<div class="mx-0 pb-10" v-if="step && response[responseIndex]">
+			<div class="mx-0 pb-10" v-if="step && response[i]">
 				<div class="list_item">
 					<b>Uploaded by</b>
 					<div class="flex items-center">
-						<span class="font-light">{{ store.getUser(response[responseIndex].creator)[0].fullname }}</span>
+						<span class="font-light">{{ store.getUser(entry(i).response.creator)[0].fullname }}</span>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -137,7 +146,7 @@ selected.value = 'welcome';
 				<div class="list_item">
 					<b>Date of recording</b>
 					<span class="font-light"
-						>{{ getDate(response[responseIndex].created) }} at {{ getTime(response[responseIndex].created) }}</span
+						>{{ getDate(entry(i).response.created) }} at {{ getTime(entry(i).response.created) }}</span
 					>
 				</div>
 				<div class="list_item">
@@ -174,7 +183,7 @@ selected.value = 'welcome';
 					</span>
 				</div>
 			</div>
-			<ion-modal :fullscreen="true" :is-open="selected !== null" v-if="step && response[responseIndex]">
+			<ion-modal :fullscreen="true" :is-open="selected !== null" v-if="step && response[i]">
 				<ion-header>
 					<ion-toolbar>
 						<ion-buttons slot="start">
@@ -286,7 +295,7 @@ selected.value = 'welcome';
 
 					<div class="mx-10 h-full flex flex-col items-center justify-center" v-if="selected == 'verified'">
 						<div class="bg-gray-900 py-4 px-3 w-full text-center -mt-10 py-3 rounded-2xl">
-							<span class="font-bold"> Video {{ responseIndex + 1 }} of {{ response.length }} Verified</span>
+							<span class="font-bold"> Video {{ i + 1 }} of {{ response.length }} Verified</span>
 						</div>
 						<div class="mt-10 w-full mx-10">
 							<div class="flex justify-between py-3 border-b border-t border-white/20">
@@ -296,7 +305,7 @@ selected.value = 'welcome';
 								<b>Verification date</b><span>{{ getDate(Date()) }} at {{ getTime(Date()) }}</span>
 							</div>
 							<div class="mt-10 bg-green-700 py-4 rounded-xl font-bold text-center" @click="nextResponse()">
-								<span v-if="responseIndex + 1 < response.length"> Proceed to Video {{ responseIndex + 2 }}</span>
+								<span v-if="i + 1 < response.length"> Proceed to Video {{ i + 2 }}</span>
 								<span v-else>Complete verification</span>
 							</div>
 						</div>

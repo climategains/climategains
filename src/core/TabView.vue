@@ -1,47 +1,47 @@
-<script setup lang="ts">
-import {
-	IonRouterOutlet,
-	IonPage,
-	IonTabBar,
-	IonTabButton,
-	IonTabs,
-	IonButtons,
-	IonBackButton,
-	IonHeader,
-	IonContent,
-	IonTitle,
-	IonToolbar
-} from '@ionic/vue';
+<script lang="ts">
+import { IonRouterOutlet, IonPage, IonTabBar, IonTabButton, IonTabs, IonContent, IonToolbar } from '@ionic/vue';
+
 import { personCircleSharp, earthOutline, search, homeOutline } from 'ionicons/icons';
-import { ref } from 'vue';
+import { IonIcon } from '@ionic/vue';
+import { defineComponent } from 'vue';
+export default defineComponent({
+	components: { IonIcon, IonRouterOutlet, IonPage, IonTabBar, IonTabButton, IonTabs, IonContent, IonToolbar },
+	setup() {
+		return {
+			personCircleSharp,
+			earthOutline,
+			search,
+			homeOutline
+		};
+	}
+});
 </script>
-
 <template>
-	<ion-page>
-		<ion-content>
+	<IonPage>
+		<IonContent>
 			<slot name="default-view-body"></slot>
-		</ion-content>
-		<ion-toolbar>
-			<ion-tabs>
-				<ion-router-outlet></ion-router-outlet>
-				<ion-tab-bar slot="bottom">
-					<ion-tab-button tab="home" href="./">
-						<ion-icon :icon="homeOutline"></ion-icon>
-					</ion-tab-button>
+		</IonContent>
+		<IonToolbar>
+			<IonTabs>
+				<IonRouterOutlet></IonRouterOutlet>
+				<IonTabBar slot="bottom">
+					<IonTabButton tab="home" href="./">
+						<IonIcon :icon="homeOutline"></IonIcon>
+					</IonTabButton>
 
-					<ion-tab-button tab="list" href="/list">
-						<ion-icon :icon="earthOutline"></ion-icon>
-					</ion-tab-button>
+					<IonTabButton tab="list" href="/list">
+						<IonIcon :icon="earthOutline"></IonIcon>
+					</IonTabButton>
 
-					<ion-tab-button tab="account" href="/account">
-						<ion-icon :icon="personCircleSharp"></ion-icon>
-					</ion-tab-button>
+					<IonTabButton tab="account" href="/account">
+						<IonIcon :icon="personCircleSharp"></IonIcon>
+					</IonTabButton>
 
-					<ion-tab-button tab="search" href="/search">
-						<ion-icon :icon="search"></ion-icon>
-					</ion-tab-button>
-				</ion-tab-bar>
-			</ion-tabs>
-		</ion-toolbar>
-	</ion-page>
+					<IonTabButton tab="search" href="/search">
+						<IonIcon :icon="search"></IonIcon>
+					</IonTabButton>
+				</IonTabBar>
+			</IonTabs>
+		</IonToolbar>
+	</IonPage>
 </template>

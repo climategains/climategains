@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 
-import { IonButton, IonModal, IonButtons, IonCard, IonCardHeader, IonCardSubtitle, IonCardContent } from '@ionic/vue';
-
-import useStore from '../stores/main';
+import { IonCardHeader, IonCardSubtitle } from '@ionic/vue';
 
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const store = useStore();
 
 const date = new Date().toLocaleDateString('en-uk', {
 	weekday: 'long',
@@ -16,11 +13,6 @@ const date = new Date().toLocaleDateString('en-uk', {
 	month: 'long',
 	day: 'numeric'
 });
-
-const modalIsOpen = ref(false);
-const showModal = () => {
-	modalIsOpen.value = true;
-};
 </script>
 
 <template>
@@ -102,16 +94,6 @@ const showModal = () => {
 </template>
 
 <style scoped>
-video {
-	height: 100vh;
-	object-fit: cover;
-	width: 100%;
-	height: 100%;
-	display: inline-block;
-	position: absolute;
-	top: 0;
-}
-
 .login_menu {
 	@apply absolute py-2 px-4 text-white text-lg top-2 right-2 flex w-full justify-end items-center;
 	font-weight: 500;

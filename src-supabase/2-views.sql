@@ -12,6 +12,9 @@ CREATE VIEW public.profile_for_all AS
         FROM public.profile;
 
 ALTER VIEW public.profile_for_all OWNER TO postgres; -- Populate view with Use superuser privileges.
+REVOKE ALL   ON TABLE public.profile_for_all FROM PUBLIC, anon, authenticated, service_role;
+GRANT ALL    ON TABLE public.profile_for_all TO service_role;
+GRANT SELECT ON TABLE public.profile_for_all TO anon, authenticated;
 
 COMMENT ON VIEW public.profile_for_all IS 
     'The subset of profile information that should be publicly accessible.';
@@ -33,6 +36,10 @@ CREATE VIEW public.project_for_mgm WITH (security_barrier) AS
         -- can_manage(project.id) or invoker_is_manager(project.id).
 
 ALTER VIEW public.project_for_mgm OWNER TO postgres; -- Populate view with Use superuser privileges.
+REVOKE ALL   ON TABLE public.project_for_mgm FROM PUBLIC, anon, authenticated, service_role;
+GRANT ALL    ON TABLE public.project_for_mgm TO service_role;
+GRANT SELECT ON TABLE public.project_for_mgm TO anon, authenticated;
+GRANT UPDATE ON TABLE public.project_for_mgm TO anon, authenticated;
 
 COMMENT ON VIEW public.project_for_mgm IS 
     E'Project metadata that the current user can edit.'
@@ -60,6 +67,10 @@ CREATE VIEW public.role_for_usermgm WITH (security_barrier) AS
         -- can_manage(project.id) or invoker_is_manager(project.id).
 
 ALTER VIEW public.role_for_usermgm OWNER TO postgres; -- Populate view with Use superuser privileges.
+REVOKE ALL   ON TABLE public.role_for_usermgm FROM PUBLIC, anon, authenticated, service_role;
+GRANT ALL    ON TABLE public.role_for_usermgm TO service_role;
+GRANT SELECT ON TABLE public.role_for_usermgm TO anon, authenticated;
+GRANT UPDATE ON TABLE public.role_for_usermgm TO anon, authenticated;
 
 COMMENT ON VIEW public.role_for_usermgm IS 
     E'User permission records that the current user can manage (edit).'
@@ -86,6 +97,10 @@ CREATE VIEW public.step_for_payment WITH (security_barrier) AS
         WHERE public.can_pay(step.project_id);
 
 ALTER VIEW public.step_for_payment OWNER TO postgres; -- Populate view with Use superuser privileges.
+REVOKE ALL   ON TABLE public.step_for_payment FROM PUBLIC, anon, authenticated, service_role;
+GRANT ALL    ON TABLE public.step_for_payment TO service_role;
+GRANT SELECT ON TABLE public.step_for_payment TO anon, authenticated;
+GRANT UPDATE ON TABLE public.step_for_payment TO anon, authenticated;
 
 COMMENT ON VIEW public.step_for_payment IS E''
     'Payment related information about projects steps that is editable by the current user.'
@@ -109,6 +124,10 @@ CREATE OR REPLACE VIEW public.step_for_validation WITH (security_barrier) AS
         WHERE public.can_validate(step.project_id);
 
 ALTER VIEW public.step_for_validation OWNER TO postgres; -- Populate view with Use superuser privileges.
+REVOKE ALL   ON TABLE public.step_for_validation FROM PUBLIC, anon, authenticated, service_role;
+GRANT ALL    ON TABLE public.step_for_validation TO service_role;
+GRANT SELECT ON TABLE public.step_for_validation TO anon, authenticated;
+GRANT UPDATE ON TABLE public.step_for_validation TO anon, authenticated;
 
 COMMENT ON VIEW public.step_for_validation IS E''
     'Validation related information about project steps that is editable by the current user.'

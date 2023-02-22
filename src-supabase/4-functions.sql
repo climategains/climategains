@@ -27,6 +27,11 @@ BEGIN
     RETURN(result);
 END;$$;
 
+ALTER FUNCTION public.can_implement(my_project_id bigint) OWNER TO postgres;
+REVOKE ALL ON FUNCTION public.can_implement(my_project_id bigint) FROM PUBLIC, anon, authenticated, service_role;
+GRANT  ALL ON FUNCTION public.can_implement(my_project_id bigint) 
+    TO anon, authenticated, service_role;
+
 /* To recreate dropped dependent objects:
 
 CREATE POLICY update_for_own_project ON public.project FOR UPDATE TO authenticated 
@@ -76,6 +81,11 @@ BEGIN
     RETURN(result);
 END;$$;
 
+ALTER FUNCTION public.can_pay(my_project_id bigint) OWNER TO postgres;
+REVOKE ALL ON FUNCTION public.can_pay(my_project_id bigint) FROM PUBLIC, anon, authenticated, service_role;
+GRANT  ALL ON FUNCTION public.can_pay(my_project_id bigint)
+    TO anon, authenticated, service_role;
+
 COMMENT ON FUNCTION public.can_pay(a_project_id bigint) IS E''
     'Determine if the current user should be able to edit payment information for a project step. '
     'Allowed only if the user has role "manager" for the project’s programme.'
@@ -115,6 +125,11 @@ BEGIN
     RETURN(result);
 END;$$;
 
+ALTER FUNCTION public.can_validate(my_project_id bigint) OWNER TO postgres;
+REVOKE ALL ON FUNCTION public.can_validate(my_project_id bigint) FROM PUBLIC, anon, authenticated, service_role;
+GRANT  ALL ON FUNCTION public.can_validate(my_project_id bigint)
+    TO anon, authenticated, service_role;
+
 COMMENT ON FUNCTION public.can_validate(a_project_id bigint) IS E''
     'Determine if the current user should be able to edit validation information for a project step. '
     'Allowed only if the user has role "validator" for the project. And in the future also if the '
@@ -141,6 +156,20 @@ BEGIN
     RETURN new;
 END;$$;
 
+ALTER FUNCTION public.insert_project_mgr() OWNER TO postgres;
+REVOKE ALL ON FUNCTION public.insert_project_mgr() FROM PUBLIC, anon, authenticated, service_role;
+GRANT  ALL ON FUNCTION public.insert_project_mgr() TO service_role;
+-- TODO: The following was contained in the Supabase dump, but probably is wrong as it would 
+-- counteract the (necessary) REVOKE ALL for this "SECURITY definer" function. To confirm.
+-- GRANT ALL ON FUNCTION public.insert_project_mgr() TO
+--    TO anon, authenticated, service_role;
+
+-- At this time, CREATE OR REPLACE TRIGGER does not work in Supabase SQL Editor due to a bug. See:
+-- https://github.com/supabase/supabase/issues/12523 . (It works via psql, though.)
+DROP TRIGGER IF EXISTS insert_project_mgr ON public.project;
+CREATE TRIGGER insert_project_mgr AFTER INSERT ON public.project 
+    FOR EACH ROW EXECUTE FUNCTION public.insert_project_mgr();
+
 COMMENT ON FUNCTION public.insert_project_mgr() IS E''
     'Trigger function for table table public.project that creates a project manager role for the '
     'current user.'
@@ -148,12 +177,6 @@ COMMENT ON FUNCTION public.insert_project_mgr() IS E''
     'This is a privileged function ("SECURITY definer") and must be protected from direct execution. '
     'Used as AFTER INSERT trigger public.project.insert_project_mgr, where it makes the user a '
     'project manager of the project she just created.';
-
--- At this time, CREATE OR REPLACE TRIGGER does not work in Supabase SQL Editor due to a bug. See:
--- https://github.com/supabase/supabase/issues/12523 . (It works via psql, though.)
-DROP TRIGGER IF EXISTS insert_project_mgr ON public.project;
-CREATE TRIGGER insert_project_mgr AFTER INSERT ON public.project 
-    FOR EACH ROW EXECUTE FUNCTION public.insert_project_mgr();
 
 
 -- project_for_response(a_response_id)
@@ -167,6 +190,11 @@ BEGIN
         FROM response JOIN step ON step.id = response.step_id
         WHERE response.id = a_response_id;
 END;$$;
+
+ALTER FUNCTION public.project_for_response(my_response_id bigint) OWNER TO postgres;
+REVOKE ALL ON FUNCTION public.project_for_response(my_response_id bigint) FROM PUBLIC, anon, authenticated, service_role;
+GRANT  ALL ON FUNCTION public.project_for_response(my_response_id bigint)
+    TO anon, authenticated, service_role;
 
 COMMENT ON FUNCTION public.project_for_response(a_response_id bigint) IS 
     'Determines the project of the specified response.'
@@ -218,6 +246,18 @@ BEGIN
     RETURN new;
 END;$$;
 
+ALTER FUNCTION public.insert_profile() OWNER TO postgres;
+REVOKE ALL ON FUNCTION public.insert_profile() FROM PUBLIC, anon, authenticated, service_role;
+GRANT  ALL ON FUNCTION public.insert_profile() TO service_role;
+-- TODO: The following was contained in the Supabase dump, but probably is wrong as it would 
+-- counteract the (necessary) REVOKE ALL for this "SECURITY definer" function. To confirm.
+-- GRANT ALL ON FUNCTION public.insert_project_mgr() TO
+--    TO anon, authenticated, service_role;
+
+DROP TRIGGER IF EXISTS insert_profile ON auth.users;
+CREATE TRIGGER insert_profile AFTER INSERT ON auth.users
+    FOR EACH ROW EXECUTE FUNCTION public.insert_profile();
+
 COMMENT ON FUNCTION public.insert_profile() IS E''
     'Trigger function for table auth.users that creates a public.profile record, populates it with '
     'relevant data from auth.users.raw_user_meta_data, and then deletes the raw_user_meta_data '
@@ -226,7 +266,3 @@ COMMENT ON FUNCTION public.insert_profile() IS E''
     'This is a privileged function ("SECURITY definer") and must be protected from direct execution. '
     'Used as AFTER INSERT trigger auth.users.insert_profile where is transfers additional user meta '
     'data to the profile. This enables signup and profile data submission in a single API call.';
-
-DROP TRIGGER IF EXISTS insert_profile ON auth.users;
-CREATE TRIGGER insert_profile AFTER INSERT ON auth.users
-    FOR EACH ROW EXECUTE FUNCTION public.insert_profile();

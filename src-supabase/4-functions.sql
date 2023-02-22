@@ -6,7 +6,7 @@
 -- can_implement(a_project_id)
 
 -- Needed only when changing the function signature (incl. parameter renaming).
-DROP FUNCTION public.can_implement(bigint) CASCADE;
+DROP FUNCTION IF EXISTS public.can_implement(bigint) CASCADE;
 
 CREATE OR REPLACE FUNCTION public.can_implement(a_project_id bigint) RETURNS boolean 
     LANGUAGE plpgsql AS $$
@@ -53,9 +53,9 @@ COMMENT ON FUNCTION public.can_implement(a_project_id bigint) IS E''
 -- can_pay(a_project_id)
 
 -- Needed only when changing the function signature (incl. parameter renaming).
-DROP FUNCTION public.can_pay(bigint) CASCADE;
+DROP FUNCTION IF EXISTS public.can_pay(bigint) CASCADE;
 
-CREATE OR REPLACE FUNCTION public.can_pay(my_project_id bigint) RETURNS boolean
+CREATE OR REPLACE FUNCTION public.can_pay(a_project_id bigint) RETURNS boolean
     LANGUAGE plpgsql AS $$
 DECLARE
     result boolean;
@@ -67,7 +67,7 @@ BEGIN
                 JOIN programme on project.programme_id = programme.id
                 JOIN role ON programme.id = role.programme_id
             WHERE 
-                project.id = my_project_id AND 
+                project.id = a_project_id AND 
                 role.manager AND 
                 role.user_id = auth.uid()
         )
@@ -76,7 +76,7 @@ BEGIN
     RETURN(result);
 END;$$;
 
-COMMENT ON FUNCTION public.can_pay(my_project_id bigint) IS E''
+COMMENT ON FUNCTION public.can_pay(a_project_id bigint) IS E''
     'Determine if the current user should be able to edit payment information for a project step. '
     'Allowed only if the user has role "manager" for the project’s programme.'
     '\n\n'
@@ -85,13 +85,15 @@ COMMENT ON FUNCTION public.can_pay(my_project_id bigint) IS E''
     '\n\n'
     'Used in view public.step_for_payment.';
 
+/* To recreate dropped dependent objects: See 2-views.sql under "step_for_payment". */
+
 
 -- can_validate(a_project_id)
 
 -- Needed only when changing the function signature (incl. parameter renaming).
-DROP FUNCTION public.can_validate(bigint) CASCADE;
+DROP FUNCTION IF EXISTS public.can_validate(bigint) CASCADE;
 
-CREATE OR REPLACE FUNCTION public.can_validate(my_project_id bigint) RETURNS boolean
+CREATE OR REPLACE FUNCTION public.can_validate(a_project_id bigint) RETURNS boolean
     LANGUAGE plpgsql AS $$
 DECLARE 
     result boolean;
@@ -104,7 +106,7 @@ BEGIN
             SELECT role.user_id
                 FROM project JOIN role ON project.id = role.project_id
                 WHERE 
-                    project.id = my_project_id AND 
+                    project.id = a_project_id AND 
                     role.validator AND 
                     role.user_id = auth.uid()
         )
@@ -113,7 +115,7 @@ BEGIN
     RETURN(result);
 END;$$;
 
-COMMENT ON FUNCTION public.can_validate(my_project_id bigint) IS E''
+COMMENT ON FUNCTION public.can_validate(a_project_id bigint) IS E''
     'Determine if the current user should be able to edit validation information for a project step. '
     'Allowed only if the user has role "validator" for the project. And in the future also if the '
     'user has the role "validator" for the project’s programme.'
@@ -123,8 +125,12 @@ COMMENT ON FUNCTION public.can_validate(my_project_id bigint) IS E''
     '\n\n'
     'Used in view public.step_for_validation.';
 
+/* To recreate dropped dependent objects: See 2-views.sql under "step_for_validation". */
+
 
 -- insert_project_mgr()
+
+DROP FUNCTION IF EXISTS public.insert_project_mgr() CASCADE;
 
 CREATE OR REPLACE FUNCTION public.insert_project_mgr() RETURNS trigger
     LANGUAGE plpgsql SECURITY definer AS $$
@@ -152,6 +158,8 @@ CREATE TRIGGER insert_project_mgr AFTER INSERT ON public.project
 
 -- project_for_response(a_response_id)
 
+DROP FUNCTION IF EXISTS public.project_for_response(bigint) CASCADE;
+
 CREATE OR REPLACE FUNCTION public.project_for_response(a_response_id bigint) RETURNS bigint
     LANGUAGE plpgsql AS $$
 BEGIN
@@ -160,8 +168,16 @@ BEGIN
         WHERE response.id = a_response_id;
 END;$$;
 
-COMMENT ON FUNCTION public.project_for_response(my_response_id bigint) IS 
-    'Determines the project of the specified response.';
+COMMENT ON FUNCTION public.project_for_response(a_response_id bigint) IS 
+    'Determines the project of the specified response.'
+    '\n\n'
+    'Used by this RLS policy: public.response.insert_for_own_project';
+
+/* To recreate dropped dependent objects:
+
+CREATE POLICY insert_for_own_project ON public.response FOR INSERT TO authenticated 
+    WITH CHECK (public.can_implement(public.project_for_response(id)));
+*/
 
 
 --
@@ -170,6 +186,8 @@ COMMENT ON FUNCTION public.project_for_response(my_response_id bigint) IS
 --
 
 -- insert_profile()
+
+DROP FUNCTION IF EXISTS public.insert_profile() CASCADE;
 
 CREATE OR REPLACE FUNCTION public.insert_profile() RETURNS trigger 
     LANGUAGE plpgsql SECURITY definer AS $$

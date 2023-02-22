@@ -27,7 +27,7 @@ function logOut() {
 }
 </script>
 <template>
-	<opp-view>
+	<tab-view>
 		<template #default-view-body>
 			<div v-if="store.isAuthenticated">
 				<div class="mx-4 mt-14">
@@ -213,7 +213,7 @@ function logOut() {
 				<accountView />
 			</div>
 		</template>
-	</opp-view>
+	</tab-view>
 </template>
 <style scoped>
 .items li {

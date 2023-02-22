@@ -3,7 +3,6 @@ import { ref } from 'vue';
 
 import { IonButton, IonModal } from '@ionic/vue';
 
-import AboutComponent from 'components/about/AboutComponent.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
 // Import Swiper styles
@@ -19,7 +18,7 @@ const showModal = () => {
 };
 </script>
 <template>
-	<base-view>
+	<page-view>
 		<template #default-view-title> Become an Activist </template>
 		<template #default-view-body>
 			<!-- <swiper
@@ -110,7 +109,7 @@ const showModal = () => {
 				<div class="action_button" @click="() => router.push('./2')">Next</div>
 			</div>
 		</template>
-	</base-view>
+	</page-view>
 </template>
 <style scoped>
 .action_button {

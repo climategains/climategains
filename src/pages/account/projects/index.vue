@@ -1,10 +1,10 @@
 <script setup async lang="ts">
 import { ref } from 'vue';
 
-import useStore from '../../../stores/main';
+import useStore from '@/stores/main';
 import { useRouter } from 'vue-router';
 
-import icon from '../../../components/ui/icon.vue';
+import icon from '@/components/ui/icon.vue';
 
 const store = useStore();
 const router = useRouter();
@@ -23,7 +23,7 @@ function getIcon(value) {
 }
 </script>
 <template>
-	<base-view>
+	<page-view>
 		<template #default-view-title>
 			<div class="ml-1">My Account</div>
 		</template>
@@ -84,5 +84,5 @@ function getIcon(value) {
 				</div>
 			</div>
 		</template>
-	</base-view>
+	</page-view>
 </template>

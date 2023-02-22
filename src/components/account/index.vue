@@ -11,7 +11,7 @@ import { useRouter } from 'vue-router';
 
 import { supabase } from '@/helpers/api';
 
-import createAccount from './accountCreate.vue';
+import createAccount from './create.vue';
 
 const router = useRouter();
 const store = useStore();

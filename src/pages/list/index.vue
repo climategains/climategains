@@ -3,10 +3,8 @@
 import OppView from 'core/OppView.vue';
 import { useRouter } from 'vue-router';
 import { onMounted, reactive, ref } from 'vue';
-import useStore from '../../stores/main/index.js';
-import icon from '../../components/ui/icon.vue';
-
-import actions from '../../json/actions.json';
+import useStore from '@/stores/main/index.js';
+import icon from '@/components/ui/icon.vue';
 
 const store = useStore();
 const router = useRouter();
@@ -41,7 +39,7 @@ function getCountry(value) {
 }
 </script>
 <template>
-	<opp-view>
+	<tab-view>
 		<template #default-view-body>
 			<div v-if="store.role == 'validator'">
 				<div
@@ -105,7 +103,7 @@ function getCountry(value) {
 				</ul>
 			</div>
 		</template>
-	</opp-view>
+	</tab-view>
 </template>
 <style scoped>
 .items {

@@ -5,7 +5,6 @@ import { Capacitor } from '@capacitor/core';
 
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { onIonViewWillEnter, onIonViewWillLeave } from '@ionic/vue';
-import OppView from '../../core/OppView.vue';
 
 const files = ref(null);
 const vidIndex = ref(3);
@@ -50,7 +49,7 @@ onIonViewWillEnter(() => {
 </script>
 
 <template>
-	<opp-view>
+	<tab-view>
 		<template #default-view-title>
 			<div class="text-center">Start</div>
 		</template>
@@ -72,7 +71,7 @@ onIonViewWillEnter(() => {
 				</div>
 			</div>
 		</template>
-	</opp-view>
+	</tab-view>
 </template>
 
 <style scoped>

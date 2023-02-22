@@ -3,10 +3,8 @@ import { ref } from 'vue';
 
 import { IonButton, IonModal } from '@ionic/vue';
 
-import AboutComponent from 'components/about/AboutComponent.vue';
-
 import '@splidejs/vue-splide/css';
-import useStore from '../../../stores/main/index.js';
+import useStore from '@/stores/main/index.js';
 
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 
@@ -22,11 +20,11 @@ const showModal = () => {
 
 function proceed() {
 	store.role = 'activist';
-	router.push('../../list');
+	router.push('/list');
 }
 </script>
 <template>
-	<base-view>
+	<page-view>
 		<template #default-view-title> Become an Activist </template>
 		<template #default-view-body>
 			<div class="w-full mt-4 text-center">
@@ -460,7 +458,7 @@ function proceed() {
 				</div>
 			</div>
 		</template>
-	</base-view>
+	</page-view>
 </template>
 <style scoped>
 .action_button {

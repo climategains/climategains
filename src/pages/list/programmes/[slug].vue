@@ -7,9 +7,9 @@ import '@splidejs/vue-splide/css';
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 import { useRouter, useRoute } from 'vue-router';
 
-import accountView from '../../../components/account/index.vue';
+import accountView from '@/components/account/index.vue';
 
-import useStore from '../../../stores/main';
+import useStore from '@/stores/main';
 
 const store = useStore();
 
@@ -42,7 +42,7 @@ function signup() {
 }
 </script>
 <template>
-	<base-view>
+	<page-view>
 		<template #default-view-title>
 			<!-- <div class="ml-1">{{ $route.params.slug }}</div> -->
 			<div class="ml-0">Climate Actions</div>
@@ -221,7 +221,7 @@ function signup() {
 				</div>
 			</div>
 		</template>
-	</base-view>
+	</page-view>
 </template>
 <style scoped>
 ion-modal {

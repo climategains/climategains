@@ -12,10 +12,8 @@ import {
 	IonTitle,
 	IonToolbar
 } from '@ionic/vue';
-import { personCircleSharp, flame, earthOutline, leaf, search, homeOutline } from 'ionicons/icons';
+import { personCircleSharp, earthOutline, search, homeOutline } from 'ionicons/icons';
 import { ref } from 'vue';
-
-const header = ref(false);
 </script>
 
 <template>

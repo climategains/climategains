@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { getDate, getTime } from '@/helpers/parsers';
-import useStore from '../../stores/main';
+import useStore from '@/stores/main';
 
 const store = useStore();
 
@@ -12,7 +12,7 @@ function profile() {
 }
 </script>
 <template>
-	<base-view>
+	<page-view>
 		<template #default-view-title>
 			<div class="ml-1">My Account</div>
 		</template>
@@ -59,5 +59,5 @@ function profile() {
 				</p>
 			</div>
 		</template>
-	</base-view>
+	</page-view>
 </template>

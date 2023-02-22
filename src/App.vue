@@ -10,7 +10,6 @@ store.fetchProjects();
 store.fetchSteps();
 store.fetchUsers();
 store.fetchQuestions();
-
 store.fetchMedia();
 </script>
 

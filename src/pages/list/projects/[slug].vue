@@ -35,7 +35,7 @@ function isSubmitted(id) {
 
 function signup() {
 	if (store.isAuthenticated) {
-		router.push(`../../verify/${project.id}`);
+		router.push(`/verify/${project.id}`);
 	} else {
 		modalIsOpen.value = true;
 	}
@@ -46,7 +46,7 @@ onMounted(async () => {
 });
 </script>
 <template>
-	<base-view>
+	<page-view>
 		<template #default-view-title>
 			<!-- <div class="ml-1">{{ $route.params.slug }}</div> -->
 			<div class="ml-0">Climate Actions</div>
@@ -242,7 +242,7 @@ onMounted(async () => {
 				</ion-modal>
 			</div>
 		</template>
-	</base-view>
+	</page-view>
 </template>
 <style scoped>
 .content_container {

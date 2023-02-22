@@ -1,5 +1,5 @@
 <template>
-	<base-view>
+	<page-view>
 		<template #default-view-title>
 			<div class="ml-1">My Projects</div>
 		</template>
@@ -187,12 +187,12 @@
 				</div>
 			</ion-content>
 		</template>
-	</base-view>
+	</page-view>
 </template>
 <script setup async>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import useStore from '../../../stores/main';
+import useStore from '@/stores/main';
 
 const store = useStore();
 

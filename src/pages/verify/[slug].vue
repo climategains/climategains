@@ -62,7 +62,7 @@ onMounted(async () => {
 selected.value = 'welcome';
 </script>
 <template>
-	<base-view>
+	<page-view>
 		<template #default-view-title>
 			<!-- <div class="ml-1">{{ $route.params.slug }}</div> -->
 			<div class="ml-0">Climate Actions</div>
@@ -314,7 +314,7 @@ selected.value = 'welcome';
 				</ion-content>
 			</ion-modal>
 		</template>
-	</base-view>
+	</page-view>
 </template>
 <style scoped>
 .list_item {

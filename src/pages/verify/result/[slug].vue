@@ -1,5 +1,5 @@
 <template>
-	<project-view>
+	<result-view>
 		<template #default-view-body>
 			<ion-content class="ion-padding">
 				<div class="success banner">
@@ -62,13 +62,13 @@
 				</div>
 			</ion-content>
 		</template>
-	</project-view>
+	</result-view>
 </template>
 <script setup async>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import ProjectView from '@/core/ProjectView.vue';
-import useStore from '../../../stores/main';
+import { useRoute } from 'vue-router';
+import ResultView from '@/core/ResultView.vue';
+import useStore from '@/stores/main';
 
 const store = useStore();
 const route = useRoute();

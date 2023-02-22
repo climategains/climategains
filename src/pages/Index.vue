@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import OppView from 'core/OppView.vue';
-import AboutComponent from 'components/about/AboutComponent.vue';
 
 import { IonButton, IonModal, IonButtons, IonCard, IonCardHeader, IonCardSubtitle, IonCardContent } from '@ionic/vue';
 
@@ -26,7 +24,7 @@ const showModal = () => {
 </script>
 
 <template>
-	<opp-view>
+	<tab-view>
 		<template #default-view-title>
 			<div class="text-center">Start</div>
 		</template>
@@ -100,7 +98,7 @@ const showModal = () => {
 				</div>
 			</div>
 		</template>
-	</opp-view>
+	</tab-view>
 </template>
 
 <style scoped>

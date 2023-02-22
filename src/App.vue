@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import { IonApp, IonRouterOutlet } from '@ionic/vue';
 import '@splidejs/vue-splide/css/core';
+import useStore from './stores/main';
+
+const store = useStore();
+
+store.fetchProgrammes();
+store.fetchProjects();
+store.fetchSteps();
+store.fetchUsers();
+store.fetchQuestions();
+store.fetchMedia();
 </script>
 
 <template>

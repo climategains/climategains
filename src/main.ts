@@ -12,17 +12,15 @@ import 'core';
 
 import VueSplide from '@splidejs/vue-splide';
 
-import BaseView from './core/BaseView.vue';
+import PageView from './core/PageView.vue';
 
-import OppView from './core/BaseView.vue';
+import TabView from './core/TabView.vue';
 
 const app = createApp(App).use(createPinia()).use(IonicVue).use(VueSplide).use(router);
 
-app.component('BaseView', BaseView);
+app.component('PageView', PageView);
 
-app.component('OppView', OppView);
-
-
+app.component('TabView', TabView);
 
 router.isReady().then(() => {
 	app.mount('#app');

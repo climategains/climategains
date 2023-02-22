@@ -1,5 +1,8 @@
 <template>
-	<tab-view>
+	<page-view>
+		<template #default-view-title>
+			<div class="ml-1">My Projects</div>
+		</template>
 		<template #default-view-body>
 			<ion-content class="ion-padding">
 				<div class="bg-black">
@@ -44,10 +47,10 @@
 
 					<ul class="px-4">
 						<li class="inline-flex w-full py-3 border-b border-white/20 justify-between">
-							<span class="font-bold">Project Name</span><span> {{ store.project.name }}</span>
+							<span class="font-bold">Project Name</span><span> {{ project.name }}</span>
 						</li>
 						<li class="inline-flex w-full py-3 border-b border-white/20 justify-between">
-							<span class="font-bold">Project ID</span><span> {{ store.project.id }}</span>
+							<span class="font-bold">Project ID</span><span> {{ project.id }}</span>
 						</li>
 						<li class="inline-flex w-full py-3 border-b border-white/20 justify-between">
 							<span class="font-bold"> Programme</span><span> {{ programme.name }}</span>
@@ -56,7 +59,7 @@
 							<span class="font-bold">Sector</span><span> {{ programme.default_sector }}</span>
 						</li>
 						<li class="inline-flex w-full py-3 border-b border-white/20 justify-between">
-							<span class="font-bold">Date Submitted</span><span> {{ store.project.created }}</span>
+							<span class="font-bold">Date Submitted</span><span> {{ project.created }}</span>
 						</li>
 					</ul>
 					<div class="w-full flex items-center mt-0 mb-0 bg-white/10">
@@ -184,22 +187,23 @@
 				</div>
 			</ion-content>
 		</template>
-	</tab-view>
+	</page-view>
 </template>
 <script setup async>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { useRoute } from 'vue-router';
-import { IonButton, IonModal } from '@ionic/vue';
+import { useRoute, useRouter } from 'vue-router';
 import useStore from '@/stores/main';
 
 const store = useStore();
-const projects = ref(null);
 
-const programme = store.getProgramme(store.project.programme_id);
-console.log(programme);
-import '@splidejs/vue-splide/css';
+const route = useRoute();
+const router = useRouter();
 
-import { Splide, SplideSlide } from '@splidejs/vue-splide';
+store.fetchProjects();
+
+const project = store.getProject(route.params.slug);
+
+const programme = store.getProgramme(project.programme_id);
 
 onBeforeUnmount(() => {});
 </script>
@@ -207,6 +211,7 @@ onBeforeUnmount(() => {});
 <style>
 .modal {
 	position: absolute;
+	display: none;
 	top: 0;
 	width: 100%;
 	height: 100%;

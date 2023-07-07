@@ -78,7 +78,9 @@ GRANT ALL ON SEQUENCE public.backing_id_seq TO authenticated;
 GRANT ALL ON SEQUENCE public.backing_id_seq TO service_role;
 
 COMMENT ON TABLE public.backing IS 'Backings are instances of support for a project, together with '
-    'a definition what the backer will receive in return.';
+    'a definition what the backer should receive in return according to the contractual agreement '
+    'made. This is different from the later actual transactions of returns, which are recorded in '
+    'another table.';
 COMMENT ON COLUMN public.backing.id IS 'Database-internal ID. Auto-generated for inserts.';
 COMMENT ON COLUMN public.backing.created IS 'Creation date and time of this database record. If not '
     'provided, set to the current time for inserts.';
@@ -110,8 +112,8 @@ COMMENT ON COLUMN public.backing.support_type IS 'A tag describing the category 
     'computer, which is important for aggregation in reporting statistics etc..';
 COMMENT ON COLUMN public.backing.support_description IS 'Natural language definition of what this '
     'non-financial backing consists of.';
-COMMENT ON COLUMN public.backing.returns_type IS 'Type of returns or repayment that will be provided '
-    'to the backer if the project is successful. One of:\n'
+COMMENT ON COLUMN public.backing.returns_type IS 'Type of returns or repayment that, according to '
+    'the agreement made, should be provided to the backer if the project is successful. One of:\n'
     '  • "nothing": Backer agreed to receive no returns, so the returns_* fields must be NULL.\n'
     '  • "itmo_transfer": Backer will receive an ITMO transfer of a fixed amount.\n'
     '  • "itmo_share": Backer will receive the revenue from the sale of the given percentage of the '
@@ -126,7 +128,7 @@ COMMENT ON COLUMN public.backing.returns_amount IS 'If returns_type is "itmo_tra
     'their sales revenue to the backer. The value is in percentage points from 0-100. In all other '
     'cases, this field must be NULL.';
 COMMENT ON COLUMN public.backing.returns_description IS 'A natural language definition of the '
-    'in-kind returns that the backer will receive.';
+    'in-kind returns that the backer should receive according to the agreement.';
 
 
 --
@@ -169,7 +171,11 @@ GRANT ALL ON SEQUENCE public.benefit_id_seq TO authenticated;
 GRANT ALL ON SEQUENCE public.benefit_id_seq TO service_role;
 
 COMMENT ON TABLE public.benefit IS 'Benefits of projects for specific persons or groups, beyond '
-    'the reduction of GHG emissions that benefit everyone globally.';
+    'the reduction of GHG emissions that benefit everyone globally. Records must not overlap: '
+    'the same real-world benefit must not be the content of several overlapping entries, such as '
+    'one more generic and several more specific entries. Only with this requirement, benefits can '
+    'be aggregated properly for reporting and statistics. If necessary, replace a more generic '
+    'record with several more specific ones while a project is underway.';
 COMMENT ON COLUMN public.benefit.id IS 'Database-internal ID. Auto-generated for inserts.';
 COMMENT ON COLUMN public.benefit.project_id IS 'ID (see project.id) of the project to which this '
     'benefit belongs.';
@@ -217,6 +223,7 @@ COMMENT ON TABLE public.benefit_type IS 'Computer understandable categorization 
 COMMENT ON COLUMN public.benefit_type.benefit_id IS 'The project benefit to categorize.';
 COMMENT ON COLUMN public.benefit_type.tag_id IS 'The category this benefit falls under, as a '
     'reference to a dynamically created tag (see tag.id).';
+
 
 --
 -- emissions_avoided

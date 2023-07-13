@@ -23,3 +23,6 @@ yarn-error.log*
 
 # Temp files during development
 src-supabase/pg_dump*.sql
+
+# Legacy or soon-to-be legacy files.
+/doc/supabase-schema-core.[1-4]*
